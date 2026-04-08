@@ -1,0 +1,39 @@
+{
+	"selectLanguage": "Select language",
+	"ru": "Russian",
+	"en": "English",
+	"discountText": "25% discount for new customers. Click to learn more...",
+	"notFound": {
+		"title": "The page you are looking for could not be found — but don’t be upset!",
+		"weHave": "But we have:",
+		"benefits": [
+			"Exquisite manicure designs for every taste",
+			"individual approach and impeccable execution",
+			"stylish studio with a pleasant atmosphere"
+		],
+		"backToHome": "Go back to the main page"
+	},
+	"carousel": {
+		"slide1": {
+			"title": "EXCLUSIVE OFFER",
+			"discount": "-25% for new clients!",
+			"description": "Only now and only for you — a special discount on all studio services!",
+			"alt": "Nail design 1"
+		},
+		"slide2": {
+			"title": "Exclusive offer for friends",
+			"discount": "$5 bonus",
+			"description": "Your friends choose beauty — you get a reward! For each friend you refer — $5 credit to your studio account. Create your beauty circle!",
+			"alt": "Nail design 2"
+		},
+		"slide3": {
+			"alt": "Studio logo"
+		}
+	},
+	"common": {
+		"new": "New!"
+	},
+	"servises": {
+		"title": "Services"
+	}
+}

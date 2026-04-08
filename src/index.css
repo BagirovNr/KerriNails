@@ -7,3 +7,6 @@
 	--color-dark: #8e8d8a;
 	--color-pink: #d8478e;
 }
+.clip-trapezoid {
+	clip-path: polygon(0 0, 100% 0, 50% 100%, 0 100%);
+}

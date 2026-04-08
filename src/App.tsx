@@ -10,24 +10,76 @@ import Services from './pages/Services/Services'
 import i18n from '../i18n/main'
 import { I18nextProvider } from 'react-i18next'
 import './index.css'
+import Prices from './pages/Prices/Prices'
+import LandingPage from './pages/Landing/LandingPage'
+import Layout from './components/Layout/Layout'
 
 function App() {
 	return (
 		<I18nextProvider i18n={i18n}>
 			<Router>
-				<Header />
 				<main>
 					<Routes>
-						<Route path='/' element={<Home />} />
-						<Route path='/services' element={<Services />} />
-						<Route path='/portfolio' element={<Portfolio />} />
-						<Route path='/reviews' element={<Reviews />} />
-						<Route path='/contact' element={<Contact />} />
-						<Route path='/discount' element={<Discount />} />
+						<Route path='/' element={<LandingPage />} />
+						<Route
+							path='/services'
+							element={
+								<Layout>
+									<Services />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/home'
+							element={
+								<Layout>
+									<Home />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/portfolio'
+							element={
+								<Layout>
+									<Portfolio />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/reviews'
+							element={
+								<Layout>
+									<Reviews />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/contact'
+							element={
+								<Layout>
+									<Contact />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/prices'
+							element={
+								<Layout>
+									<Prices />
+								</Layout>
+							}
+						/>
+						<Route
+							path='/discount'
+							element={
+								<Layout>
+									<Discount />
+								</Layout>
+							}
+						/>
 						<Route path='*' element={<NotFound />} />
 					</Routes>
 				</main>
-				{/* <Footer /> */}
 			</Router>
 		</I18nextProvider>
 	)

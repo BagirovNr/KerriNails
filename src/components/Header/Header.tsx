@@ -33,10 +33,10 @@ function Header() {
 							{t('discountText')}
 						</Link>
 						<a
-							href='tel:+79052260282'
+							href='tel:+79992488379'
 							className='text-base sm:text-lg text-gray-700 hover:text-pink-600 transition-colors whitespace-nowrap'
 						>
-							8(905)226-02-82
+							+7 (999) 248-83-79
 						</a>
 						<a
 							href='https://yandex.ru/maps/10865/vsevolgsk/house/vsevolozhskiy_prospekt_7/Z0kYcANmT0cPQFhqfXxzc3tkZw==/?ll=30.646628%2C60.022774&z=16.67'
@@ -74,11 +74,11 @@ function Header() {
 								{t('discountText')}
 							</Link>
 							<a
-								href='tel:+79052260282'
+								href='tel:+79992488379'
 								className='text-base text-gray-700'
 								onClick={handleLinkClick}
 							>
-								8(905)226-02-82
+								+7 (999) 248-83-79
 							</a>
 							<a
 								href='https://yandex.ru/maps/org/kerii_nailss/109264447499/?display-text=kerii%20nailss&ll=30.646628%2C60.022774&mode=search&sll=30.646628%2C60.022774&sspn=0.021801%2C0.006551&text=kerii%20nailss&z=16'

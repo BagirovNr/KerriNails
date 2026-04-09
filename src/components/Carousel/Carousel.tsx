@@ -90,7 +90,7 @@ const Carousel = () => {
 			{/* Кнопки навигации */}
 			<button
 				onClick={goToPrev}
-				className='absolute top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 backdrop-blur-sm p-2 sm:p-3 rounded-full shadow-xl hover:bg-purple-100 transition-all duration-300 z-10'
+				className='absolute top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 backdrop-blur-sm p-2 sm:p-3 rounded-full shadow-xl hover:bg-purple-100 transition-all duration-300 '
 				aria-label='Предыдущий слайд'
 			>
 				<svg
@@ -109,7 +109,7 @@ const Carousel = () => {
 			</button>
 			<button
 				onClick={goToNext}
-				className='absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-90 backdrop-blur-sm p-2 sm:p-3 rounded-full shadow-xl hover:bg-purple-100 transition-all duration-300 z-10'
+				className='absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-90 backdrop-blur-sm p-2 sm:p-3 rounded-full shadow-xl hover:bg-purple-100 transition-all duration-300 '
 				aria-label='Следующий слайд'
 			>
 				<svg

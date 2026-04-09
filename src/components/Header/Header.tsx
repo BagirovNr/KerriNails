@@ -39,7 +39,7 @@ function Header() {
 							+7 (999) 248-83-79
 						</a>
 						<a
-							href='https://yandex.ru/maps/10865/vsevolgsk/house/vsevolozhskiy_prospekt_7/Z0kYcANmT0cPQFhqfXxzc3tkZw==/?ll=30.646628%2C60.022774&z=16.67'
+							href='https://yandex.ru/maps/org/kerii_nailss/109264447499/?display-text=kerii%20nailss&ll=30.642508%2C60.022774&mode=search&sll=30.646628%2C60.022774&sspn=0.021801%2C0.006551&text=kerii%20nailss&z=16'
 							target='_blank'
 							rel='noopener noreferrer'
 							className='text-xs sm:text-sm text-gray-600 hover:text-pink-600 underline whitespace-nowrap'

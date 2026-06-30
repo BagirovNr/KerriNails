@@ -1,0 +1,118 @@
+{
+  "lang": "English",
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "prices": "Prices",
+    "contact": "Contact"
+  },
+  "landing": {
+    "subtitle": "Premium nail salon in Saint Petersburg",
+    "book": "Book an appointment",
+    "prices": "Our prices",
+    "review": "Leave a review",
+    "portfolio": "Portfolio"
+  },
+  "home": {
+    "hero_title": "Beauty in every nail",
+    "hero_sub": "Book online — your master is waiting",
+    "book_btn": "Book now",
+    "services_title": "Our services",
+    "why_title": "Why choose us",
+    "why1_title": "Original materials only",
+    "why1_text": "Gel polish, acrylic and tools from leading brands",
+    "why2_title": "Experienced masters",
+    "why2_text": "Team with 5+ years experience and regular training",
+    "why3_title": "Sterility",
+    "why3_text": "Disposable tools, autoclave, SanPiN compliance",
+    "why4_title": "Easy booking",
+    "why4_text": "Online booking 24/7, reminder 1 hour before visit"
+  },
+  "services": {
+    "title": "Services",
+    "book": "Book",
+    "detail": "Details",
+    "price_from": "from"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "filter_all": "All works",
+    "filter_manicure": "Manicure",
+    "filter_pedicure": "Pedicure",
+    "filter_design": "Design",
+    "filter_extension": "Extensions"
+  },
+  "prices": {
+    "title": "Price list",
+    "subtitle": "Book and get a perfect manicure",
+    "book": "Book"
+  },
+  "contact": {
+    "title": "Contacts",
+    "phone": "Phone",
+    "address": "Address",
+    "hours": "Working hours",
+    "hours_value": "Mon–Sat: 10:00–20:00, Sun: 11:00–18:00"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Register",
+    "logout": "Sign out",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "login_btn": "Sign in",
+    "register_btn": "Create account",
+    "no_account": "No account?",
+    "has_account": "Already have an account?"
+  },
+  "booking": {
+    "title": "Book a service",
+    "select_service": "Select a service",
+    "select_date": "Select a date",
+    "select_time": "Select a time",
+    "comment": "Comment (optional)",
+    "submit": "Book",
+    "success": "Successfully booked! See you soon.",
+    "my_appointments": "My appointments",
+    "cancel": "Cancel",
+    "status_pending": "Pending",
+    "status_confirmed": "Confirmed",
+    "status_cancelled": "Cancelled",
+    "status_completed": "Completed"
+  },
+  "forms": {
+    "call_title": "Request a call",
+    "call_sub": "Introduce yourself and we will call you back",
+    "email_title": "Write to us",
+    "email_sub": "We'll reply within an hour",
+    "name": "Your name",
+    "phone": "Phone",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending...",
+    "sent": "Message sent!",
+    "error": "Error sending. Please try again."
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "appointments": "Appointments",
+    "clients": "Clients",
+    "stats": "Statistics",
+    "confirm": "Confirm",
+    "complete": "Complete",
+    "cancel": "Cancel"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "But we have exquisite nail designs for every taste!",
+    "back": "Go home"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "privacy": "Privacy policy"
+  }
+}

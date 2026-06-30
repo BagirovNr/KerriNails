@@ -1,0 +1,118 @@
+{
+  "lang": "Azərbaycan",
+  "nav": {
+    "home": "Ana səhifə",
+    "services": "Xidmətlər",
+    "portfolio": "Portfolio",
+    "prices": "Qiymətlər",
+    "contact": "Əlaqə"
+  },
+  "landing": {
+    "subtitle": "Sankt-Peterburqda premium dırnaq salonu",
+    "book": "Xidmətə yazıl",
+    "prices": "Qiymətlərimiz",
+    "review": "Rəy bildir",
+    "portfolio": "Portfolio"
+  },
+  "home": {
+    "hero_title": "Hər dırnaqda gözəllik",
+    "hero_sub": "Onlayn yazılın — ustanız sizi gözləyir",
+    "book_btn": "Yazıl",
+    "services_title": "Xidmətlərimiz",
+    "why_title": "Niyə bizi seçirlər",
+    "why1_title": "Yalnız orijinal materiallar",
+    "why1_text": "Aparıcı brendlərin gel-lak, akrilik və alətləri",
+    "why2_title": "Təcrübəli ustalar",
+    "why2_text": "5 ildən çox təcrübə və müntəzəm təlim",
+    "why3_title": "Sterillik",
+    "why3_text": "Birdəfəlik alətlər, avtoklav, SanPin tələblərinə uyğunluq",
+    "why4_title": "Rahat qeydiyyat",
+    "why4_text": "24/7 onlayn yazılma, ziyarətdən 1 saat əvvəl xatırlatma"
+  },
+  "services": {
+    "title": "Xidmətlər",
+    "book": "Yazıl",
+    "detail": "Ətraflı",
+    "price_from": "dan"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "filter_all": "Bütün işlər",
+    "filter_manicure": "Manikür",
+    "filter_pedicure": "Pedikür",
+    "filter_design": "Dizayn",
+    "filter_extension": "Uzatma"
+  },
+  "prices": {
+    "title": "Qiymət cədvəli",
+    "subtitle": "Yazılın və mükəmməl manikür alın",
+    "book": "Yazıl"
+  },
+  "contact": {
+    "title": "Əlaqə",
+    "phone": "Telefon",
+    "address": "Ünvan",
+    "hours": "İş saatları",
+    "hours_value": "B.e–Şənbə: 10:00–20:00, Bazar: 11:00–18:00"
+  },
+  "auth": {
+    "login": "Giriş",
+    "register": "Qeydiyyat",
+    "logout": "Çıxış",
+    "name": "Ad",
+    "email": "Email",
+    "phone": "Telefon",
+    "password": "Şifrə",
+    "login_btn": "Daxil ol",
+    "register_btn": "Hesab yarat",
+    "no_account": "Hesabınız yoxdur?",
+    "has_account": "Artıq hesabınız var?"
+  },
+  "booking": {
+    "title": "Xidmətə yazılma",
+    "select_service": "Xidmət seçin",
+    "select_date": "Tarix seçin",
+    "select_time": "Vaxt seçin",
+    "comment": "Şərh (istəyə bağlı)",
+    "submit": "Yazıl",
+    "success": "Uğurla yazıldınız! Sizi gözləyirik.",
+    "my_appointments": "Mənim yazılmalarım",
+    "cancel": "Ləğv et",
+    "status_pending": "Gözləyir",
+    "status_confirmed": "Təsdiqləndi",
+    "status_cancelled": "Ləğv edildi",
+    "status_completed": "Tamamlandı"
+  },
+  "forms": {
+    "call_title": "Zəng sifariş edin",
+    "call_sub": "Tanıdın, biz sizi geri arayacağıq",
+    "email_title": "Bizə yazın",
+    "email_sub": "Bir saat ərzində cavab veririk",
+    "name": "Adınız",
+    "phone": "Telefon",
+    "email": "Email",
+    "message": "Mesaj",
+    "send": "Göndər",
+    "sending": "Göndərilir...",
+    "sent": "Mesaj göndərildi!",
+    "error": "Göndərmə xətası. Yenidən cəhd edin."
+  },
+  "admin": {
+    "title": "İdarəçi paneli",
+    "appointments": "Yazılmalar",
+    "clients": "Müştərilər",
+    "stats": "Statistika",
+    "confirm": "Təsdiqlə",
+    "complete": "Tamamla",
+    "cancel": "Ləğv et"
+  },
+  "notFound": {
+    "title": "Səhifə tapılmadı",
+    "text": "Amma hər zövqə uyğun gözəl dırnaq dizaynlarımız var!",
+    "back": "Ana səhifəyə"
+  },
+  "footer": {
+    "rights": "Bütün hüquqlar qorunur",
+    "privacy": "Məxfilik siyasəti"
+  }
+}

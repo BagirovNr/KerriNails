@@ -1,0 +1,17 @@
+import { ReactNode } from 'react'
+import Header from '../Header/Header'
+import Footer from '../Footer/Footer'
+import ContactPanel from '../forms/ContactPanel'
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <div className='min-h-screen flex flex-col'>
+      <Header />
+      <main className='flex-1 pt-[105px] md:pt-[130px]'>
+        {children}
+      </main>
+      <Footer />
+      <ContactPanel />
+    </div>
+  )
+}

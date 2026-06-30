@@ -1,0 +1,118 @@
+{
+  "lang": "O'zbek",
+  "nav": {
+    "home": "Bosh sahifa",
+    "services": "Xizmatlar",
+    "portfolio": "Portfolio",
+    "prices": "Narxlar",
+    "contact": "Aloqa"
+  },
+  "landing": {
+    "subtitle": "Sankt-Peterburgdagi premium tirnoq saloni",
+    "book": "Xizmatga yozilish",
+    "prices": "Narxlarimiz",
+    "review": "Fikr bildirish",
+    "portfolio": "Portfolio"
+  },
+  "home": {
+    "hero_title": "Har bir tirnoqda go'zallik",
+    "hero_sub": "Onlayn yozilingiz — usta sizi kutmoqda",
+    "book_btn": "Yozilish",
+    "services_title": "Xizmatlarimiz",
+    "why_title": "Nima uchun bizni tanlashadi",
+    "why1_title": "Faqat original materiallar",
+    "why1_text": "Yetakchi brendlarning gel-lak, akrilik va asboblari",
+    "why2_title": "Tajribali ustalar",
+    "why2_text": "5 yildan ortiq tajriba va muntazam o'qitish",
+    "why3_title": "Sterillik",
+    "why3_text": "Bir martalik asboblar, avtoklav, SanPin talablariga muvofiqliq",
+    "why4_title": "Qulay yozilish",
+    "why4_text": "24/7 onlayn yozilish, tashrif oldidan 1 soat eslatma"
+  },
+  "services": {
+    "title": "Xizmatlar",
+    "book": "Yozilish",
+    "detail": "Batafsil",
+    "price_from": "dan"
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "filter_all": "Barcha ishlar",
+    "filter_manicure": "Manikur",
+    "filter_pedicure": "Pedikur",
+    "filter_design": "Dizayn",
+    "filter_extension": "Uzaytirish"
+  },
+  "prices": {
+    "title": "Narx ro'yxati",
+    "subtitle": "Yozilingiz va mukammal manikur oling",
+    "book": "Yozilish"
+  },
+  "contact": {
+    "title": "Aloqa",
+    "phone": "Telefon",
+    "address": "Manzil",
+    "hours": "Ish vaqti",
+    "hours_value": "Du–Shan: 10:00–20:00, Yak: 11:00–18:00"
+  },
+  "auth": {
+    "login": "Kirish",
+    "register": "Ro'yxatdan o'tish",
+    "logout": "Chiqish",
+    "name": "Ism",
+    "email": "Email",
+    "phone": "Telefon",
+    "password": "Parol",
+    "login_btn": "Kirish",
+    "register_btn": "Hisob yaratish",
+    "no_account": "Hisobingiz yo'qmi?",
+    "has_account": "Hisobingiz bormi?"
+  },
+  "booking": {
+    "title": "Xizmatga yozilish",
+    "select_service": "Xizmatni tanlang",
+    "select_date": "Sanani tanlang",
+    "select_time": "Vaqtni tanlang",
+    "comment": "Izoh (ixtiyoriy)",
+    "submit": "Yozilish",
+    "success": "Muvaffaqiyatli yozildingiz! Sizni kutamiz.",
+    "my_appointments": "Mening yozilishlarim",
+    "cancel": "Bekor qilish",
+    "status_pending": "Kutilmoqda",
+    "status_confirmed": "Tasdiqlandi",
+    "status_cancelled": "Bekor qilindi",
+    "status_completed": "Yakunlandi"
+  },
+  "forms": {
+    "call_title": "Qo'ng'iroq buyurtma qilish",
+    "call_sub": "O'zingizni tanishtiring, biz qayta qo'ng'iroq qilamiz",
+    "email_title": "Bizga yozing",
+    "email_sub": "Bir soat ichida javob beramiz",
+    "name": "Ismingiz",
+    "phone": "Telefon",
+    "email": "Email",
+    "message": "Xabar",
+    "send": "Yuborish",
+    "sending": "Yuborilmoqda...",
+    "sent": "Xabar yuborildi!",
+    "error": "Yuborishda xato. Qayta urinib ko'ring."
+  },
+  "admin": {
+    "title": "Administrator paneli",
+    "appointments": "Yozilishlar",
+    "clients": "Mijozlar",
+    "stats": "Statistika",
+    "confirm": "Tasdiqlash",
+    "complete": "Yakunlash",
+    "cancel": "Bekor qilish"
+  },
+  "notFound": {
+    "title": "Sahifa topilmadi",
+    "text": "Ammo bizda har ta'mga mos ajoyib tirnoq dizaynlari bor!",
+    "back": "Bosh sahifaga"
+  },
+  "footer": {
+    "rights": "Barcha huquqlar himoyalangan",
+    "privacy": "Maxfiylik siyosati"
+  }
+}

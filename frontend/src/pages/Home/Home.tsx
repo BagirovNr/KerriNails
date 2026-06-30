@@ -195,27 +195,33 @@ export default function Home() {
 
 						{/* Фото-коллаж */}
 						<div className='flex-1 w-full'>
-							<div className='grid grid-cols-2 gap-3'>
-								<img
-									src={studio1}
-									alt='Студия Kerri Nails'
-									className='w-full h-52 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300'
-								/>
-								<img
-									src={studio2}
-									alt='Работа мастера'
-									className='w-full h-52 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300 mt-6'
-								/>
-								<img
-									src={studio3}
-									alt='Материалы студии'
-									className='w-full h-40 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300'
-								/>
-								<img
-									src={studio4}
-									alt='Готовая работа'
-									className='w-full h-40 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300 -mt-6'
-								/>
+							<div className='flex gap-3 items-start'>
+								{/* Левая колонка */}
+								<div className='flex flex-col gap-3 flex-1'>
+									<img
+										src={studio1}
+										alt='Студия Kerri Nails'
+										className='w-full h-52 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300'
+									/>
+									<img
+										src={studio3}
+										alt='Материалы студии'
+										className='w-full h-36 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300'
+									/>
+								</div>
+								{/* Правая колонка — сдвинута вниз через pt */}
+								<div className='flex flex-col gap-3 flex-1 pt-8'>
+									<img
+										src={studio2}
+										alt='Работа мастера'
+										className='w-full h-36 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300'
+									/>
+									<img
+										src={studio4}
+										alt='Готовая работа'
+										className='w-full h-52 object-cover rounded-2xl shadow-md hover:scale-[1.02] transition-transform duration-300'
+									/>
+								</div>
 							</div>
 						</div>
 					</div>

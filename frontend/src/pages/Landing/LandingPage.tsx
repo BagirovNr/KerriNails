@@ -35,7 +35,7 @@ export default function LandingPage() {
 
       {/* Logo */}
       <div className='mb-2 animate-fadeInScale'>
-        <img src={logo} alt='Kerri Nails' className='w-20 h-20 rounded-full object-cover border-2 border-white/20 shadow-xl'/>
+        <img src={logo} alt=' a' className='w-20 h-20 rounded-full object-cover border-2 border-white/20 shadow-xl'/>
       </div>
 
       <h1 className='text-4xl font-black text-center mb-1 text-white tracking-tight animate-fadeInUp' style={{ fontFamily: 'Georgia, serif' }}>

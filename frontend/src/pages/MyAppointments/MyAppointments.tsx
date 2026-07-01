@@ -26,11 +26,33 @@ const STATUS_COLORS = {
 function TelegramConnect({ userId }: { userId: string }) {
 	const [connected, setConnected] = useState<boolean | null>(null)
 
-	useEffect(() => {
+	const checkStatus = () => {
 		apiFetch(`/api/telegram/status?userId=${userId}`)
 			.then(r => r.json())
 			.then(d => setConnected(d.connected))
 			.catch(() => setConnected(false))
+	}
+
+	useEffect(() => {
+		checkStatus()
+
+		// Когда пользователь возвращается на вкладку (например, из Telegram) —
+		// перепроверяем статус подключения
+		const onFocus = () => checkStatus()
+		const onVisibility = () => {
+			if (document.visibilityState === 'visible') checkStatus()
+		}
+		window.addEventListener('focus', onFocus)
+		document.addEventListener('visibilitychange', onVisibility)
+
+		// Резервный опрос на случай, если событие фокуса не сработает
+		const interval = setInterval(checkStatus, 5000)
+
+		return () => {
+			window.removeEventListener('focus', onFocus)
+			document.removeEventListener('visibilitychange', onVisibility)
+			clearInterval(interval)
+		}
 	}, [userId])
 
 	const botUsername =

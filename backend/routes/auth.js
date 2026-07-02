@@ -1,8 +1,7 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { v4: uuidv4 } = require('uuid')
-const { readJson, writeJson } = require('../middleware/storage')
+const prisma = require('../lib/prisma')
 const { JWT_SECRET, authMiddleware } = require('../middleware/auth')
 
 const router = express.Router()
@@ -16,20 +15,18 @@ router.post('/register', async (req, res) => {
   if (!name || !phone || !email || !password)
     return res.status(400).json({ error: 'Заполните все поля' })
 
-  const users = readJson('users.json')
-  if (users.find(u => u.email === email))
+  const existingEmail = await prisma.user.findUnique({ where: { email } })
+  if (existingEmail)
     return res.status(400).json({ error: 'Email уже зарегистрирован' })
-  if (users.find(u => u.phone === phone))
+
+  const existingPhone = await prisma.user.findUnique({ where: { phone } })
+  if (existingPhone)
     return res.status(400).json({ error: 'Телефон уже зарегистрирован' })
 
   const hashed = await bcrypt.hash(password, 10)
-  const user = {
-    id: uuidv4(), name, phone, email,
-    password: hashed, role: 'client',
-    createdAt: new Date().toISOString()
-  }
-  users.push(user)
-  writeJson('users.json', users)
+  const user = await prisma.user.create({
+    data: { name, phone, email, password: hashed, role: 'client' },
+  })
 
   const token = jwt.sign(
     { id: user.id, email: user.email, role: user.role, name: user.name },
@@ -44,8 +41,7 @@ router.post('/login', async (req, res) => {
   if (!email || !password)
     return res.status(400).json({ error: 'Введите email и пароль' })
 
-  const users = readJson('users.json')
-  const user = users.find(u => u.email === email)
+  const user = await prisma.user.findUnique({ where: { email } })
   if (!user) return res.status(400).json({ error: 'Неверный email или пароль' })
 
   const match = await bcrypt.compare(password, user.password)
@@ -59,9 +55,8 @@ router.post('/login', async (req, res) => {
 })
 
 // GET /api/auth/me
-router.get('/me', authMiddleware, (req, res) => {
-  const users = readJson('users.json')
-  const user = users.find(u => u.id === req.user.id)
+router.get('/me', authMiddleware, async (req, res) => {
+  const user = await prisma.user.findUnique({ where: { id: req.user.id } })
   if (!user) return res.status(404).json({ error: 'Пользователь не найден' })
   res.json({ id: user.id, name: user.name, email: user.email, phone: user.phone, role: user.role })
 })
@@ -73,8 +68,7 @@ router.post('/forgot', async (req, res) => {
   const { phone } = req.body
   if (!phone) return res.status(400).json({ error: 'Укажите номер телефона' })
 
-  const users = readJson('users.json')
-  const user = users.find(u => u.phone === phone.trim())
+  const user = await prisma.user.findUnique({ where: { phone: phone.trim() } })
 
   // Не говорим найден ли номер — безопасность
   if (!user) {
@@ -113,12 +107,13 @@ router.post('/reset', async (req, res) => {
   }
 
   // Меняем пароль
-  const users = readJson('users.json')
-  const idx = users.findIndex(u => u.id === entry.userId)
-  if (idx === -1) return res.status(404).json({ error: 'Пользователь не найден' })
+  const hashedPassword = await bcrypt.hash(newPassword, 10)
+  const updated = await prisma.user.updateMany({
+    where: { id: entry.userId },
+    data: { password: hashedPassword },
+  })
+  if (updated.count === 0) return res.status(404).json({ error: 'Пользователь не найден' })
 
-  users[idx].password = await bcrypt.hash(newPassword, 10)
-  writeJson('users.json', users)
   resetCodes.delete(phone.trim())
 
   res.json({ message: 'Пароль успешно изменён. Войдите с новым паролем.' })

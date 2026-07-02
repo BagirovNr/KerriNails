@@ -5,7 +5,7 @@
 //    https://t.me/ИМЯ_БОТА?start=USER_ID
 // 2. Telegram открывает бота и передаёт ему /start USER_ID
 // 3. Наш webhook (POST /api/telegram/webhook) получает это сообщение,
-//    извлекает USER_ID и сохраняет telegramChatId в users.json
+//    извлекает USER_ID и сохраняет telegramChatId в базе данных
 // 4. Теперь при подтверждении/завершении записи admin.js шлёт уведомление
 //    напрямую клиенту, а не только администратору.
 //
@@ -14,7 +14,7 @@
 
 const express = require('express')
 const https = require('https')
-const { readJson, writeJson } = require('../middleware/storage')
+const prisma = require('../lib/prisma')
 
 const router = express.Router()
 
@@ -79,10 +79,9 @@ router.post('/webhook', async (req, res) => {
 	}
 
 	// Привязываем chat_id к пользователю
-	const users = readJson('users.json')
-	const idx = users.findIndex(u => u.id === userId)
+	const user = await prisma.user.findUnique({ where: { id: userId } })
 
-	if (idx === -1) {
+	if (!user) {
 		await sendMessage(
 			token,
 			chatId,
@@ -91,10 +90,8 @@ router.post('/webhook', async (req, res) => {
 		return
 	}
 
-	const user = users[idx]
-
 	// Уже привязан тот же chat_id — не дублируем
-	if (users[idx].telegramChatId === String(chatId)) {
+	if (user.telegramChatId === String(chatId)) {
 		await sendMessage(
 			token,
 			chatId,
@@ -103,8 +100,10 @@ router.post('/webhook', async (req, res) => {
 		return
 	}
 
-	users[idx].telegramChatId = String(chatId)
-	writeJson('users.json', users)
+	await prisma.user.update({
+		where: { id: userId },
+		data: { telegramChatId: String(chatId) },
+	})
 	console.log(
 		`✅ Telegram привязан: пользователь ${user.name} (${user.id}) → chat_id ${chatId}`,
 	)
@@ -118,11 +117,10 @@ router.post('/webhook', async (req, res) => {
 
 // GET /api/telegram/status?userId=XXX
 // Фронтенд проверяет, подключён ли Telegram у пользователя.
-router.get('/status', (req, res) => {
+router.get('/status', async (req, res) => {
 	const { userId } = req.query
 	if (!userId) return res.status(400).json({ connected: false })
-	const users = readJson('users.json')
-	const user = users.find(u => u.id === userId)
+	const user = await prisma.user.findUnique({ where: { id: userId } })
 	res.json({ connected: !!user?.telegramChatId })
 })
 

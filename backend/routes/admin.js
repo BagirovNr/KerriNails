@@ -1,6 +1,6 @@
 const express = require('express')
 const https = require('https')
-const { readJson, writeJson } = require('../middleware/storage')
+const prisma = require('../lib/prisma')
 const { adminMiddleware } = require('../middleware/auth')
 
 const router = express.Router()
@@ -76,8 +76,7 @@ async function sendStatusNotification(appointment, status) {
 	if (!token) return
 
 	// Ищем telegramChatId клиента
-	const users = readJson('users.json')
-	const clientUser = users.find(u => u.id === appointment.userId)
+	const clientUser = await prisma.user.findUnique({ where: { id: appointment.userId } })
 	const clientChatId = clientUser?.telegramChatId
 
 	// Уведомление администратору всегда идёт на TELEGRAM_CHAT_ID
@@ -175,11 +174,11 @@ async function sendStatusNotification(appointment, status) {
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
 // GET /api/admin/appointments
-router.get('/appointments', adminMiddleware, (req, res) => {
-	const appointments = readJson('appointments.json')
-	res.json(
-		appointments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
-	)
+router.get('/appointments', adminMiddleware, async (req, res) => {
+	const appointments = await prisma.appointment.findMany({
+		orderBy: { createdAt: 'desc' },
+	})
+	res.json(appointments)
 })
 
 // PATCH /api/admin/appointments/:id/status
@@ -189,50 +188,50 @@ router.patch('/appointments/:id/status', adminMiddleware, async (req, res) => {
 	if (!validStatuses.includes(status))
 		return res.status(400).json({ error: 'Неверный статус' })
 
-	const appointments = readJson('appointments.json')
-	const idx = appointments.findIndex(a => a.id === req.params.id)
-	if (idx === -1) return res.status(404).json({ error: 'Запись не найдена' })
+	const existing = await prisma.appointment.findUnique({ where: { id: req.params.id } })
+	if (!existing) return res.status(404).json({ error: 'Запись не найдена' })
 
-	appointments[idx].status = status
-	writeJson('appointments.json', appointments)
+	const updated = await prisma.appointment.update({
+		where: { id: req.params.id },
+		data: { status },
+	})
 
 	// Отправить уведомление клиенту при подтверждении или завершении
 	if (status === 'confirmed' || status === 'completed') {
-		sendStatusNotification(appointments[idx], status).catch(err => {
+		sendStatusNotification(updated, status).catch(err => {
 			console.error('Telegram статус unhandled:', err.message)
 		})
 	}
 
-	res.json(appointments[idx])
+	res.json(updated)
 })
 
 // GET /api/admin/users
-router.get('/users', adminMiddleware, (req, res) => {
-	const users = readJson('users.json')
-	res.json(
-		users.map(u => ({
-			id: u.id,
-			name: u.name,
-			email: u.email,
-			phone: u.phone,
-			role: u.role,
-			createdAt: u.createdAt,
-		})),
-	)
+router.get('/users', adminMiddleware, async (req, res) => {
+	const users = await prisma.user.findMany({
+		select: {
+			id: true,
+			name: true,
+			email: true,
+			phone: true,
+			role: true,
+			createdAt: true,
+		},
+	})
+	res.json(users)
 })
 
 // GET /api/admin/stats
-router.get('/stats', adminMiddleware, (req, res) => {
-	const appointments = readJson('appointments.json')
-	const users = readJson('users.json')
-	res.json({
-		total: appointments.length,
-		pending: appointments.filter(a => a.status === 'pending').length,
-		confirmed: appointments.filter(a => a.status === 'confirmed').length,
-		completed: appointments.filter(a => a.status === 'completed').length,
-		cancelled: appointments.filter(a => a.status === 'cancelled').length,
-		totalClients: users.filter(u => u.role === 'client').length,
-	})
+router.get('/stats', adminMiddleware, async (req, res) => {
+	const [total, pending, confirmed, completed, cancelled, totalClients] = await Promise.all([
+		prisma.appointment.count(),
+		prisma.appointment.count({ where: { status: 'pending' } }),
+		prisma.appointment.count({ where: { status: 'confirmed' } }),
+		prisma.appointment.count({ where: { status: 'completed' } }),
+		prisma.appointment.count({ where: { status: 'cancelled' } }),
+		prisma.user.count({ where: { role: 'client' } }),
+	])
+	res.json({ total, pending, confirmed, completed, cancelled, totalClients })
 })
 
 module.exports = router

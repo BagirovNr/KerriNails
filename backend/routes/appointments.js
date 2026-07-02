@@ -1,6 +1,5 @@
 const express = require('express')
-const { v4: uuidv4 } = require('uuid')
-const { readJson, writeJson } = require('../middleware/storage')
+const prisma = require('../lib/prisma')
 const { authMiddleware } = require('../middleware/auth')
 
 const router = express.Router()
@@ -188,9 +187,10 @@ router.post('/', authMiddleware, async (req, res) => {
     return res.status(400).json({ error: 'Запись с такой длительностью не помещается в рабочий день, выберите время раньше' })
   }
 
-  const appointments = readJson('appointments.json')
-  const conflict = appointments.find(a => {
-    if (a.date !== date || a.status === 'cancelled') return false
+  const sameDayAppointments = await prisma.appointment.findMany({
+    where: { date, status: { not: 'cancelled' } },
+  })
+  const conflict = sameDayAppointments.find(a => {
     const aDuration = a.duration || 1
     return rangesOverlap(startHour, duration, timeToHour(a.time), aDuration)
   })
@@ -199,25 +199,22 @@ router.post('/', authMiddleware, async (req, res) => {
     return res.status(400).json({ error: 'Это время уже занято (с учётом длительности услуги), выберите другое' })
   }
 
-  const appointment = {
-    id: uuidv4(),
-    userId: req.user.id,
-    userName: req.user.name,
-    userEmail: req.user.email,
-    userPhone: phone || req.user.phone || '',
-    services: serviceList,
-    service: serviceList.join(', '), // для обратной совместимости со старым полем
-    duration,
-    date,
-    time,
-    comment: comment || '',
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  }
-
-  appointments.push(appointment)
-  writeJson('appointments.json', appointments)
-  console.log('🟢 Запись сохранена в appointments.json, id:', appointment.id)
+  const appointment = await prisma.appointment.create({
+    data: {
+      userId: req.user.id,
+      userName: req.user.name,
+      userEmail: req.user.email,
+      userPhone: phone || req.user.phone || '',
+      services: serviceList,
+      service: serviceList.join(', '), // для обратной совместимости со старым полем
+      duration,
+      date,
+      time,
+      comment: comment || '',
+      status: 'pending',
+    },
+  })
+  console.log('🟢 Запись сохранена в базе данных, id:', appointment.id)
 
   // Отправка уведомления (не блокирует ответ клиенту)
   sendTelegramNotification(appointment).catch((e) => {
@@ -228,21 +225,25 @@ router.post('/', authMiddleware, async (req, res) => {
 })
 
 // GET /api/appointments/my
-router.get('/my', authMiddleware, (req, res) => {
-  const appointments = readJson('appointments.json')
-  res.json(appointments.filter(a => a.userId === req.user.id))
+router.get('/my', authMiddleware, async (req, res) => {
+  const appointments = await prisma.appointment.findMany({
+    where: { userId: req.user.id },
+    orderBy: { createdAt: 'desc' },
+  })
+  res.json(appointments)
 })
 
 // GET /api/appointments/slots?date=YYYY-MM-DD&duration=1|2|3
 // duration — сколько часов нужно для выбранных клиентом услуг (по умолчанию 1)
-router.get('/slots', (req, res) => {
+router.get('/slots', async (req, res) => {
   const { date } = req.query
   if (!date) return res.status(400).json({ error: 'Укажите дату' })
 
   const duration = Math.max(1, Math.min(parseInt(req.query.duration, 10) || 1, 3))
   const allSlots = generateHourSlots()
-  const appointments = readJson('appointments.json')
-    .filter(a => a.date === date && a.status !== 'cancelled')
+  const appointments = await prisma.appointment.findMany({
+    where: { date, status: { not: 'cancelled' } },
+  })
 
   const available = allSlots.filter(slot => {
     const startHour = timeToHour(slot)
@@ -255,12 +256,16 @@ router.get('/slots', (req, res) => {
 })
 
 // DELETE /api/appointments/:id
-router.delete('/:id', authMiddleware, (req, res) => {
-  const appointments = readJson('appointments.json')
-  const idx = appointments.findIndex(a => a.id === req.params.id && a.userId === req.user.id)
-  if (idx === -1) return res.status(404).json({ error: 'Запись не найдена' })
-  appointments[idx].status = 'cancelled'
-  writeJson('appointments.json', appointments)
+router.delete('/:id', authMiddleware, async (req, res) => {
+  const appointment = await prisma.appointment.findFirst({
+    where: { id: req.params.id, userId: req.user.id },
+  })
+  if (!appointment) return res.status(404).json({ error: 'Запись не найдена' })
+
+  await prisma.appointment.update({
+    where: { id: appointment.id },
+    data: { status: 'cancelled' },
+  })
   res.json({ message: 'Запись отменена' })
 })
 

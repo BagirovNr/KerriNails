@@ -1,0 +1,43 @@
+// Prisma schema — описывает структуру базы данных.
+// После изменения этого файла нужно выполнить:
+//   npx prisma migrate dev --name какое-то_имя
+// Подробности — в README_DATABASE.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(uuid())
+  name           String
+  phone          String   @unique
+  email          String   @unique
+  password       String
+  role           String   @default("client") // "client" | "admin"
+  telegramChatId String?
+  createdAt      DateTime @default(now())
+
+  appointments   Appointment[]
+}
+
+model Appointment {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  userName   String
+  userEmail  String
+  userPhone  String
+  services   String[] // список услуг, например ["Классический маникюр"]
+  service    String   // строка со всеми услугами через запятую (для старого фронтенда)
+  duration   Int      @default(1)
+  date       String   // формат YYYY-MM-DD
+  time       String   // формат HH:MM
+  comment    String   @default("")
+  status     String   @default("pending") // pending | confirmed | cancelled | completed
+  createdAt  DateTime @default(now())
+}

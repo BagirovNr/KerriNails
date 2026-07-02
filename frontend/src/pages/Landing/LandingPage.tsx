@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth'
 import AuthModal from '../../components/forms/AuthModal'
 import BookingModal from '../../components/BookingForm/BookingModal'
 import LanguageSwitcher from '../../components/LanguageSwitcher/LanguageSwitcher'
+import logo from '../../assets/logo.png'
 import posterImg from '../../assets/nails3.jpg'
 
 const TILES = (t: (k: string) => string, onBook: () => void) => [
@@ -58,7 +59,7 @@ export default function LandingPage() {
 		<div className='min-h-screen flex flex-col items-center justify-center px-5 py-8 relative overflow-hidden'>
 			{/* ─── Фоновое видео ─── */}
 			<video
-				className='absolute inset-0 w-full h-full object-cover object-[50%_40%]'
+				className='absolute inset-0 w-full h-full object-cover'
 				src='/videos/hero.mp4'
 				poster={posterImg}
 				autoPlay
@@ -74,13 +75,20 @@ export default function LandingPage() {
 			<div className='absolute bottom-20 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none' />
 
 			{/* Language switcher */}
-			<div className='absolute top-5 right-5 z-10'>
+			<div className='absolute top-5 right-5 z-20'>
 				<LanguageSwitcher />
 			</div>
 
 			{/* ─── Контент (поверх видео и затемнения) ─── */}
 			<div className='relative z-10 flex flex-col items-center w-full'>
 				{/* Logo */}
+				<div className='mb-2 animate-fadeInScale'>
+					<img
+						src={logo}
+						alt=' a'
+						className='w-20 h-20 rounded-full object-cover border-2 border-white/20 shadow-xl'
+					/>
+				</div>
 
 				<h1
 					className='text-4xl font-black text-center mb-1 text-white tracking-tight animate-fadeInUp'

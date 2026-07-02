@@ -12,7 +12,10 @@
     "book": "Xidmətə yazıl",
     "prices": "Qiymətlərimiz",
     "review": "Rəy bildir",
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "whatsapp": "WhatsApp-da yazın",
+    "telegram": "Telegram-da yazın",
+    "full_site": "Tam sayta keçin"
   },
   "home": {
     "hero_title": "Hər dırnaqda gözəllik",

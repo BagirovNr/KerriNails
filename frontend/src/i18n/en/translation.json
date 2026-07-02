@@ -12,7 +12,10 @@
     "book": "Book an appointment",
     "prices": "Our prices",
     "review": "Leave a review",
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "whatsapp": "Message on WhatsApp",
+    "telegram": "Message on Telegram",
+    "full_site": "Go to full site"
   },
   "home": {
     "hero_title": "Beauty in every nail",

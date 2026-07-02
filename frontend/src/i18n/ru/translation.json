@@ -12,7 +12,10 @@
     "book": "Записаться на услугу",
     "prices": "Наши цены",
     "review": "Оставить отзыв",
-    "portfolio": "Портфолио"
+    "portfolio": "Портфолио",
+    "whatsapp": "Написать в WhatsApp",
+    "telegram": "Написать в Telegram",
+    "full_site": "Перейти на полный сайт"
   },
   "home": {
     "hero_title": "Красота в каждом ногте",

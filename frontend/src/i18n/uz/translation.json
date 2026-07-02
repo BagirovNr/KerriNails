@@ -12,7 +12,10 @@
     "book": "Xizmatga yozilish",
     "prices": "Narxlarimiz",
     "review": "Fikr bildirish",
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "whatsapp": "WhatsApp orqali yozing",
+    "telegram": "Telegram orqali yozing",
+    "full_site": "To'liq saytga o'tish"
   },
   "home": {
     "hero_title": "Har bir tirnoqda go'zallik",

@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth'
 import AuthModal from '../../components/forms/AuthModal'
 import BookingModal from '../../components/BookingForm/BookingModal'
 import LanguageSwitcher from '../../components/LanguageSwitcher/LanguageSwitcher'
-import logo from '../../assets/logo.png'
+// import logo from '../../assets/logo.png'
 import posterImg from '../../assets/nails3.jpg'
 
 const TILES = (t: (k: string) => string, onBook: () => void) => [
@@ -82,13 +82,13 @@ export default function LandingPage() {
 			{/* ─── Контент (поверх видео и затемнения) ─── */}
 			<div className='relative z-10 flex flex-col items-center w-full'>
 				{/* Logo */}
-				<div className='mb-2 animate-fadeInScale'>
+				{/* <div className='mb-2 animate-fadeInScale'>
 					<img
 						src={logo}
 						alt=' a'
 						className='w-20 h-20 rounded-full object-cover border-2 border-white/20 shadow-xl'
 					/>
-				</div>
+				</div> */}
 
 				<h1
 					className='text-4xl font-black text-center mb-1 text-white tracking-tight animate-fadeInUp'
@@ -127,11 +127,11 @@ export default function LandingPage() {
 					{TILES(t, handleBook).map(tile => {
 						const inner = (
 							<div
-								className={`bg-gradient-to-br ${tile.gradient} p-0.5 rounded-2xl`}
+								className={`bg-gradient-to-br ${tile.gradient} p-0.5 rounded-2xl h-full`}
 							>
-								<div className='bg-gray-900/80 backdrop-blur-sm rounded-[14px] px-4 py-5 text-center flex flex-col items-center gap-2 hover:bg-gray-800/80 active:scale-95 transition-all duration-200'>
+								<div className='bg-gray-900/80 backdrop-blur-sm rounded-[14px] px-3 py-4 min-h-[108px] text-center flex flex-col items-center justify-center gap-2 hover:bg-gray-800/80 active:scale-95 transition-all duration-200'>
 									<span className='text-2xl'>{tile.emoji}</span>
-									<span className='text-white font-semibold text-sm leading-tight'>
+									<span className='text-white font-semibold text-sm leading-tight line-clamp-2'>
 										{tile.label}
 									</span>
 								</div>
@@ -139,7 +139,11 @@ export default function LandingPage() {
 						)
 						if (tile.action === 'book')
 							return (
-								<button key={tile.label} onClick={handleBook} className='block'>
+								<button
+									key={tile.label}
+									onClick={handleBook}
+									className='block h-full'
+								>
 									{inner}
 								</button>
 							)
@@ -150,13 +154,13 @@ export default function LandingPage() {
 									href={tile.href}
 									target='_blank'
 									rel='noopener noreferrer'
-									className='block'
+									className='block h-full'
 								>
 									{inner}
 								</a>
 							)
 						return (
-							<Link key={tile.label} to={tile.href!} className='block'>
+							<Link key={tile.label} to={tile.href!} className='block h-full'>
 								{inner}
 							</Link>
 						)

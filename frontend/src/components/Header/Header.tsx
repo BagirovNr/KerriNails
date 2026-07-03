@@ -155,15 +155,34 @@ export default function Header() {
 								>
 									{t('home.book_btn')}
 								</button>
-								{/* Mobile: иконка профиля вместо "Записаться" */}
+								{/* Mobile: иконка профиля / панели администратора вместо "Записаться" */}
 								<button
-									onClick={() => navigate('/my-appointments')}
-									aria-label='Профиль'
-									className='sm:hidden w-9 h-9 flex items-center justify-center rounded-full bg-pink-50 text-pink-500 hover:bg-pink-100 transition-colors active:scale-95'
+									onClick={() =>
+										navigate(
+											user.role === 'admin' ? '/admin' : '/my-appointments',
+										)
+									}
+									aria-label={
+										user.role === 'admin' ? 'Панель администратора' : 'Профиль'
+									}
+									className={`sm:hidden relative w-9 h-9 flex items-center justify-center rounded-full transition-colors active:scale-95 ${
+										user.role === 'admin'
+											? 'bg-purple-100 text-purple-600 hover:bg-purple-200'
+											: 'bg-pink-50 text-pink-500 hover:bg-pink-100'
+									}`}
 								>
-									<svg viewBox='0 0 24 24' className='w-5 h-5 fill-current'>
-										<path d='M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z' />
-									</svg>
+									{user.role === 'admin' ? (
+										<svg viewBox='0 0 24 24' className='w-5 h-5 fill-current'>
+											<path d='M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z' />
+										</svg>
+									) : (
+										<svg viewBox='0 0 24 24' className='w-5 h-5 fill-current'>
+											<path d='M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z' />
+										</svg>
+									)}
+									{user.role === 'admin' && (
+										<span className='absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-purple-500 rounded-full border border-white' />
+									)}
 								</button>
 							</>
 						) : (
@@ -230,6 +249,17 @@ export default function Header() {
 						</a>
 						{user ? (
 							<div className='flex flex-col gap-2'>
+								{user.role === 'admin' && (
+									<button
+										onClick={() => {
+											navigate('/admin')
+											closeMenu()
+										}}
+										className='flex items-center gap-2 text-sm text-purple-700 bg-purple-50 rounded-lg px-3 py-2.5 font-semibold hover:bg-purple-100 transition-colors text-left'
+									>
+										🗂 Панель администратора
+									</button>
+								)}
 								<button
 									onClick={() => {
 										navigate('/my-appointments')
@@ -237,7 +267,8 @@ export default function Header() {
 									}}
 									className='flex items-center gap-2 text-sm text-gray-700 font-medium hover:text-pink-600 transition-colors text-left'
 								>
-									👤 {user.name} · Профиль
+									👤 {user.name}{' '}
+									{user.role === 'admin' ? '· Мои записи' : '· Профиль'}
 								</button>
 								<button
 									onClick={() => {

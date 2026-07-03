@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../../utils/api'
+import RescheduleModal from '../../components/BookingForm/RescheduleModal'
 
 interface Appointment {
 	id: string
@@ -11,6 +12,7 @@ interface Appointment {
 	time: string
 	comment: string
 	status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+	duration?: number
 	createdAt: string
 }
 
@@ -19,6 +21,21 @@ const STATUS_COLORS = {
 	confirmed: 'bg-green-100 text-green-700',
 	cancelled: 'bg-red-100 text-red-600',
 	completed: 'bg-gray-100 text-gray-600',
+}
+
+// ─── Правило "не позднее 4 часов до начала" (совпадает с backend) ───────────
+const MIN_HOURS_BEFORE_CHANGE = 4
+const LOCKED_MESSAGE =
+	'До начала процедуры осталось менее 4 часов. Изменение или отмена записи недоступны. Свяжитесь с мастером'
+// Салон работает по московскому времени — считаем разницу в UTC+3, а не в
+// часовом поясе браузера клиента, чтобы правило работало одинаково для всех.
+const SALON_UTC_OFFSET_HOURS = 3
+
+function hoursUntil(date: string, time: string): number {
+	const startUtcMs =
+		Date.parse(`${date}T${time}:00.000Z`) -
+		SALON_UTC_OFFSET_HOURS * 60 * 60 * 1000
+	return (startUtcMs - Date.now()) / (1000 * 60 * 60)
 }
 
 // ─── Блок подключения Telegram ───────────────────────────────────────────────
@@ -121,6 +138,14 @@ export default function MyAppointments() {
 	const navigate = useNavigate()
 	const [appointments, setAppointments] = useState<Appointment[]>([])
 	const [loading, setLoading] = useState(true)
+	const [rescheduleTarget, setRescheduleTarget] = useState<Appointment | null>(
+		null,
+	)
+	const [actionError, setActionError] = useState<{
+		id: string
+		message: string
+	} | null>(null)
+	const [cancellingId, setCancellingId] = useState<string | null>(null)
 
 	useEffect(() => {
 		if (!user) {
@@ -137,12 +162,32 @@ export default function MyAppointments() {
 
 	const cancel = async (id: string) => {
 		if (!confirm('Отменить запись?')) return
-		await apiFetch(`/api/appointments/${id}`, {
-			method: 'DELETE',
-			headers: { Authorization: `Bearer ${token}` },
-		})
+		setActionError(null)
+		setCancellingId(id)
+		try {
+			const res = await apiFetch(`/api/appointments/${id}`, {
+				method: 'DELETE',
+				headers: { Authorization: `Bearer ${token}` },
+			})
+			const data = await res.json().catch(() => ({}))
+			if (!res.ok) {
+				setActionError({
+					id,
+					message: data.error || 'Не удалось отменить запись',
+				})
+				return
+			}
+			setAppointments(prev =>
+				prev.map(a => (a.id === id ? { ...a, status: 'cancelled' } : a)),
+			)
+		} finally {
+			setCancellingId(null)
+		}
+	}
+
+	const handleRescheduled = (updated: Appointment) => {
 		setAppointments(prev =>
-			prev.map(a => (a.id === id ? { ...a, status: 'cancelled' } : a)),
+			prev.map(a => (a.id === updated.id ? { ...a, ...updated } : a)),
 		)
 	}
 
@@ -181,44 +226,84 @@ export default function MyAppointments() {
 								new Date(b.createdAt).getTime() -
 								new Date(a.createdAt).getTime(),
 						)
-						.map(a => (
-							<div
-								key={a.id}
-								className='bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow'
-							>
-								<div className='flex items-start justify-between gap-3'>
-									<div className='flex-1'>
-										<p className='font-semibold text-gray-800 mb-1'>
-											{a.service}
-										</p>
-										<p className='text-sm text-gray-500'>
-											📅 {a.date} · ⏰ {a.time}
-										</p>
-										{a.comment && (
-											<p className='text-sm text-gray-400 mt-1 italic'>
-												"{a.comment}"
+						.map(a => {
+							const manageable =
+								a.status === 'pending' || a.status === 'confirmed'
+							const locked =
+								manageable &&
+								hoursUntil(a.date, a.time) < MIN_HOURS_BEFORE_CHANGE
+
+							return (
+								<div
+									key={a.id}
+									className='bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-shadow'
+								>
+									<div className='flex items-start justify-between gap-3'>
+										<div className='flex-1'>
+											<p className='font-semibold text-gray-800 mb-1'>
+												{a.service}
 											</p>
-										)}
-									</div>
-									<span
-										className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${STATUS_COLORS[a.status]}`}
-									>
-										{t(`booking.status_${a.status}`)}
-									</span>
-								</div>
-								{a.status === 'pending' && (
-									<div className='mt-3 pt-3 border-t border-gray-100'>
-										<button
-											onClick={() => cancel(a.id)}
-											className='text-sm text-red-400 hover:text-red-600 transition-colors'
+											<p className='text-sm text-gray-500'>
+												📅 {a.date} · ⏰ {a.time}
+											</p>
+											{a.comment && (
+												<p className='text-sm text-gray-400 mt-1 italic'>
+													"{a.comment}"
+												</p>
+											)}
+										</div>
+										<span
+											className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${STATUS_COLORS[a.status]}`}
 										>
-											{t('booking.cancel')} запись
-										</button>
+											{t(`booking.status_${a.status}`)}
+										</span>
 									</div>
-								)}
-							</div>
-						))}
+
+									{manageable && (
+										<div className='mt-3 pt-3 border-t border-gray-100'>
+											{locked ? (
+												<p className='text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 flex items-start gap-1.5'>
+													<span className='shrink-0'>⏰</span>
+													<span>{LOCKED_MESSAGE}</span>
+												</p>
+											) : (
+												<div className='flex items-center gap-4'>
+													<button
+														onClick={() => setRescheduleTarget(a)}
+														className='text-sm text-pink-500 hover:text-pink-600 font-medium transition-colors flex items-center gap-1'
+													>
+														🔁 Перенести
+													</button>
+													<button
+														onClick={() => cancel(a.id)}
+														disabled={cancellingId === a.id}
+														className='text-sm text-red-400 hover:text-red-600 disabled:opacity-50 transition-colors'
+													>
+														{cancellingId === a.id
+															? 'Отмена...'
+															: `${t('booking.cancel')} запись`}
+													</button>
+												</div>
+											)}
+											{actionError?.id === a.id && (
+												<p className='text-xs text-red-500 mt-2'>
+													{actionError.message}
+												</p>
+											)}
+										</div>
+									)}
+								</div>
+							)
+						})}
 				</div>
+			)}
+
+			{rescheduleTarget && (
+				<RescheduleModal
+					appointment={rescheduleTarget}
+					onClose={() => setRescheduleTarget(null)}
+					onRescheduled={handleRescheduled}
+				/>
 			)}
 		</div>
 	)

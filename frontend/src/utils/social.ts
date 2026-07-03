@@ -17,6 +17,6 @@ const VK_URL = import.meta.env.VITE_VK_URL || ''
 export const SOCIAL_LINKS = {
 	whatsapp: `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Здравствуйте! Хочу записаться на маникюр 💅')}`,
 	telegram: `https://t.me/${TELEGRAM_CONTACT}?text=${encodeURIComponent('Здравствуйте! Хочу записаться на маникюр 💅')}`,
-	instagram: INSTAGRAM_URL,
-	vk: VK_URL,
+	instagram: 'https://www.instagram.com/kerii.nailss',
+	vk: 'https://vk.com/keriinailss',
 }

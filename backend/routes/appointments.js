@@ -292,6 +292,13 @@ router.post('/', authMiddleware, async (req, res) => {
 			})
 	}
 
+	if (hoursUntilAppointment(date, time) < 0) {
+		console.log('🔴 Отклонено: дата/время уже в прошлом')
+		return res
+			.status(400)
+			.json({ error: 'Нельзя записаться на уже прошедшее время' })
+	}
+
 	const sameDayAppointments = await prisma.appointment.findMany({
 		where: { date, status: { not: 'cancelled' } },
 	})
@@ -447,6 +454,12 @@ router.patch('/:id/reschedule', authMiddleware, async (req, res) => {
 				error:
 					'Запись с такой длительностью не помещается в рабочий день, выберите время раньше',
 			})
+	}
+
+	if (hoursUntilAppointment(date, time) < 0) {
+		return res
+			.status(400)
+			.json({ error: 'Нельзя перенести на уже прошедшее время' })
 	}
 
 	const sameDayAppointments = await prisma.appointment.findMany({

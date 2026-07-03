@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { apiFetch } from '../../utils/api'
+import { todayInSalonTZ, isSlotPast } from '../../utils/time'
 
 interface AppointmentLite {
 	id: string
@@ -16,15 +17,7 @@ interface Props {
 	onRescheduled: (updated: any) => void
 }
 
-const today = () => new Date().toISOString().split('T')[0]
-
-// Возвращает true если слот уже прошёл (сегодня и час <= текущего)
-function isSlotPast(date: string, slot: string): boolean {
-	if (date !== today()) return false
-	const now = new Date()
-	const slotHour = parseInt(slot.split(':')[0], 10)
-	return slotHour <= now.getHours()
-}
+const today = todayInSalonTZ
 
 export default function RescheduleModal({
 	appointment,

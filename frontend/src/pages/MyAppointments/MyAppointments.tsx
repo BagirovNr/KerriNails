@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../../utils/api'
 import RescheduleModal from '../../components/BookingForm/RescheduleModal'
+import { hoursUntilAppointment as hoursUntil } from '../../utils/time'
 
 interface Appointment {
 	id: string
@@ -27,16 +28,6 @@ const STATUS_COLORS = {
 const MIN_HOURS_BEFORE_CHANGE = 4
 const LOCKED_MESSAGE =
 	'До начала процедуры осталось менее 4 часов. Изменение или отмена записи недоступны. Свяжитесь с мастером'
-// Салон работает по московскому времени — считаем разницу в UTC+3, а не в
-// часовом поясе браузера клиента, чтобы правило работало одинаково для всех.
-const SALON_UTC_OFFSET_HOURS = 3
-
-function hoursUntil(date: string, time: string): number {
-	const startUtcMs =
-		Date.parse(`${date}T${time}:00.000Z`) -
-		SALON_UTC_OFFSET_HOURS * 60 * 60 * 1000
-	return (startUtcMs - Date.now()) / (1000 * 60 * 60)
-}
 
 // ─── Блок подключения Telegram ───────────────────────────────────────────────
 

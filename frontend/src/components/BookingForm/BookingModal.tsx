@@ -3,22 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { SERVICES } from '../../utils/data'
 import { apiFetch } from '../../utils/api'
+import { todayInSalonTZ, isSlotPast } from '../../utils/time'
 
 interface Props {
 	onClose: () => void
 }
 
-const today = () => new Date().toISOString().split('T')[0]
-
-// Возвращает true если слот уже прошёл (сегодня и час <= текущего)
-function isSlotPast(date: string, slot: string): boolean {
-	const todayStr = today()
-	if (date !== todayStr) return false
-	const now = new Date()
-	const slotHour = parseInt(slot.split(':')[0], 10)
-	// Блокируем слот если его час <= текущему часу (даже если 15:01 — 15:00 уже нельзя)
-	return slotHour <= now.getHours()
-}
+const today = todayInSalonTZ
 
 export default function BookingModal({ onClose }: Props) {
 	const { t } = useTranslation()

@@ -8,6 +8,7 @@ import BookingModal from '../../components/BookingForm/BookingModal'
 import LanguageSwitcher from '../../components/LanguageSwitcher/LanguageSwitcher'
 // import logo from '../../assets/logo.png'
 import posterImg from '../../assets/nails3.jpg'
+import { SOCIAL_LINKS } from '../../utils/social'
 
 const TILES = (t: (k: string) => string, onBook: () => void) => [
 	{
@@ -36,16 +37,6 @@ const TILES = (t: (k: string) => string, onBook: () => void) => [
 		emoji: '⭐',
 	},
 ]
-
-// ─── Быстрая связь ────────────────────────────────────────────────────────────
-// Номер и юзернейм можно переопределить через .env (VITE_WHATSAPP_PHONE,
-// VITE_TELEGRAM_CONTACT), не трогая код. Формат VITE_WHATSAPP_PHONE — цифры
-// без "+" и пробелов (79991234567). VITE_TELEGRAM_CONTACT — либо юзернейм
-// бота/аккаунта (kerrinails), либо номер в формате +7991234567.
-const WHATSAPP_PHONE = import.meta.env.VITE_WHATSAPP_PHONE || '79992488379'
-const TELEGRAM_CONTACT = import.meta.env.VITE_TELEGRAM_CONTACT || '+79992488379'
-const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Здравствуйте! Хочу записаться на маникюр 💅')}`
-const TELEGRAM_LINK = `https://t.me/${TELEGRAM_CONTACT.replace(/^@/, '')}`
 
 export default function LandingPage() {
 	const { t } = useTranslation()
@@ -103,7 +94,7 @@ export default function LandingPage() {
 				{/* Быстрая связь: WhatsApp / Telegram */}
 				<div className='flex gap-3 mb-7 animate-fadeInUp'>
 					<a
-						href={WHATSAPP_LINK}
+						href={SOCIAL_LINKS.whatsapp}
 						target='_blank'
 						rel='noopener noreferrer'
 						className='flex items-center gap-2 bg-[#25D366] hover:bg-[#1fbd59] text-white text-sm font-semibold pl-3.5 pr-4 py-2.5 rounded-full shadow-lg shadow-black/20 active:scale-95 transition-all'
@@ -112,7 +103,7 @@ export default function LandingPage() {
 						WhatsApp
 					</a>
 					<a
-						href={TELEGRAM_LINK}
+						href={SOCIAL_LINKS.telegram}
 						target='_blank'
 						rel='noopener noreferrer'
 						className='flex items-center gap-2 bg-[#26A5E4] hover:bg-[#2196cc] text-white text-sm font-semibold pl-3.5 pr-4 py-2.5 rounded-full shadow-lg shadow-black/20 active:scale-95 transition-all'

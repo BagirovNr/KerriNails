@@ -254,6 +254,86 @@ async function sendRescheduleNotification(appointment) {
 	}
 }
 
+async function sendClientCancelNotification(appointment) {
+	const token = (process.env.TELEGRAM_BOT_TOKEN || '').trim()
+	if (!token) return
+
+	const e = escapeMarkdownV2
+	const servicesText = (appointment.services || [appointment.service]).join(
+		', ',
+	)
+
+	// Уведомление администратору — клиент отменил запись сам
+	const adminChatId = (process.env.TELEGRAM_CHAT_ID || '').trim()
+	if (adminChatId) {
+		const adminText =
+			`❌ *Клиент отменил запись*\n\n` +
+			`👤 *Клиент:* ${e(appointment.userName)}\n` +
+			`📞 *Телефон:* ${e(appointment.userPhone || 'не указан')}\n` +
+			`💆 *Услуги:* ${e(servicesText)}\n` +
+			`📅 *Дата:* ${e(appointment.date)}\n` +
+			`⏰ *Время:* ${e(appointment.time)}`
+
+		try {
+			const data = await telegramRequest(token, {
+				chat_id: Number(adminChatId),
+				text: adminText,
+				parse_mode: 'MarkdownV2',
+			})
+			if (!data.ok) {
+				const plain = adminText
+					.replace(/\\([_*[\]()~`>#+\-=|{}.!])/g, '$1')
+					.replace(/[*`]/g, '')
+				await telegramRequest(token, {
+					chat_id: Number(adminChatId),
+					text: plain,
+				}).catch(() => {})
+			}
+		} catch (err) {
+			console.error(
+				'❌ Telegram admin (отмена клиентом) ошибка:',
+				err.code || err.message,
+			)
+		}
+	}
+
+	// Подтверждение клиенту, если у него подключён Telegram
+	const clientUser = await prisma.user.findUnique({
+		where: { id: appointment.userId },
+	})
+	const clientChatId = clientUser?.telegramChatId
+	if (clientChatId) {
+		const clientText =
+			`✅ *Запись отменена*\n\n` +
+			`Вы отменили запись:\n` +
+			`💆 ${e(servicesText)}\n` +
+			`📅 ${e(appointment.date)} · ⏰ ${e(appointment.time)}\n\n` +
+			`Будем рады видеть вас снова 💅`
+
+		try {
+			const data = await telegramRequest(token, {
+				chat_id: Number(clientChatId),
+				text: clientText,
+				parse_mode: 'MarkdownV2',
+			})
+			if (!data.ok) {
+				const plain = clientText
+					.replace(/\\([_*[\]()~`>#+\-=|{}.!])/g, '$1')
+					.replace(/[*`]/g, '')
+				await telegramRequest(token, {
+					chat_id: Number(clientChatId),
+					text: plain,
+				}).catch(() => {})
+			}
+		} catch (err) {
+			console.error(
+				'❌ Telegram клиент (отмена клиентом) ошибка:',
+				err.code || err.message,
+			)
+		}
+	}
+}
+
 // ─── Routes ────────────────────────────────────────────────────────────────────
 
 // POST /api/appointments
@@ -411,10 +491,15 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 		return res.status(403).json({ error: LOCKED_MESSAGE })
 	}
 
-	await prisma.appointment.update({
+	const cancelled = await prisma.appointment.update({
 		where: { id: appointment.id },
 		data: { status: 'cancelled' },
 	})
+
+	sendClientCancelNotification(cancelled).catch(e => {
+		console.error('🔴 Telegram cancel unhandled:', e.message)
+	})
+
 	res.json({ message: 'Запись отменена' })
 })
 

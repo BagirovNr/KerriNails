@@ -76,7 +76,9 @@ async function sendStatusNotification(appointment, status) {
 	if (!token) return
 
 	// Ищем telegramChatId клиента
-	const clientUser = await prisma.user.findUnique({ where: { id: appointment.userId } })
+	const clientUser = await prisma.user.findUnique({
+		where: { id: appointment.userId },
+	})
 	const clientChatId = clientUser?.telegramChatId
 
 	// Уведомление администратору всегда идёт на TELEGRAM_CHAT_ID
@@ -119,6 +121,19 @@ async function sendStatusNotification(appointment, status) {
 			(clientChatId
 				? `📲 Клиенту отправлен запрос отзыва`
 				: `⚠️ Telegram клиента не привязан`)
+	} else if (status === 'cancelled') {
+		clientText =
+			`❌ *Здравствуйте, ${clientName}\\!*\n\n` +
+			`Ваша запись отменена мастером\\.\n\n` +
+			`💆 *Услуга:* ${serviceText}\n` +
+			`📅 *Дата:* ${e(appointment.date)}\n` +
+			`⏰ *Время:* ${e(appointment.time)}\n\n` +
+			`Если у вас есть вопросы — свяжитесь с нами\\. Будем рады записать вас в другое время 🤍`
+
+		adminText =
+			`❌ *Запись отменена (мастером)*\n\n` +
+			`👤 ${clientName} · ${e(appointment.date)} ${e(appointment.time)}\n` +
+			`💆 ${serviceText}`
 	}
 
 	if (!clientText) return
@@ -188,7 +203,9 @@ router.patch('/appointments/:id/status', adminMiddleware, async (req, res) => {
 	if (!validStatuses.includes(status))
 		return res.status(400).json({ error: 'Неверный статус' })
 
-	const existing = await prisma.appointment.findUnique({ where: { id: req.params.id } })
+	const existing = await prisma.appointment.findUnique({
+		where: { id: req.params.id },
+	})
 	if (!existing) return res.status(404).json({ error: 'Запись не найдена' })
 
 	const updated = await prisma.appointment.update({
@@ -197,7 +214,11 @@ router.patch('/appointments/:id/status', adminMiddleware, async (req, res) => {
 	})
 
 	// Отправить уведомление клиенту при подтверждении или завершении
-	if (status === 'confirmed' || status === 'completed') {
+	if (
+		status === 'confirmed' ||
+		status === 'completed' ||
+		status === 'cancelled'
+	) {
 		sendStatusNotification(updated, status).catch(err => {
 			console.error('Telegram статус unhandled:', err.message)
 		})
@@ -223,14 +244,15 @@ router.get('/users', adminMiddleware, async (req, res) => {
 
 // GET /api/admin/stats
 router.get('/stats', adminMiddleware, async (req, res) => {
-	const [total, pending, confirmed, completed, cancelled, totalClients] = await Promise.all([
-		prisma.appointment.count(),
-		prisma.appointment.count({ where: { status: 'pending' } }),
-		prisma.appointment.count({ where: { status: 'confirmed' } }),
-		prisma.appointment.count({ where: { status: 'completed' } }),
-		prisma.appointment.count({ where: { status: 'cancelled' } }),
-		prisma.user.count({ where: { role: 'client' } }),
-	])
+	const [total, pending, confirmed, completed, cancelled, totalClients] =
+		await Promise.all([
+			prisma.appointment.count(),
+			prisma.appointment.count({ where: { status: 'pending' } }),
+			prisma.appointment.count({ where: { status: 'confirmed' } }),
+			prisma.appointment.count({ where: { status: 'completed' } }),
+			prisma.appointment.count({ where: { status: 'cancelled' } }),
+			prisma.user.count({ where: { role: 'client' } }),
+		])
 	res.json({ total, pending, confirmed, completed, cancelled, totalClients })
 })
 

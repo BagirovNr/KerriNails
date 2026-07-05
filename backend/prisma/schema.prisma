@@ -32,12 +32,26 @@ model Appointment {
   userName   String
   userEmail  String
   userPhone  String
-  services   String[] // список услуг, например ["Классический маникюр"]
-  service    String   // строка со всеми услугами через запятую (для старого фронтенда)
+  services   String[]
+  service    String
   duration   Int      @default(1)
-  date       String   // формат YYYY-MM-DD
-  time       String   // формат HH:MM
+  date       String
+  time       String
   comment    String   @default("")
   status     String   @default("pending") // pending | confirmed | cancelled | completed
+  source     String   @default("online")  // online | manual
   createdAt  DateTime @default(now())
+}
+
+// Блоки расписания мастера: выходные, отпуск, заблокированные слоты
+model ScheduleBlock {
+  id        String   @id @default(uuid())
+  type      String   // day_off | vacation | blocked_slot
+  date      String?  // YYYY-MM-DD (для day_off и blocked_slot)
+  dateFrom  String?  // YYYY-MM-DD (для vacation — начало)
+  dateTo    String?  // YYYY-MM-DD (для vacation — конец включительно)
+  startTime String?  // HH:MM (только для blocked_slot)
+  endTime   String?  // HH:MM (только для blocked_slot)
+  reason    String   @default("") // комментарий мастера
+  createdAt DateTime @default(now())
 }

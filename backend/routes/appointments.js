@@ -364,12 +364,10 @@ router.post('/', authMiddleware, async (req, res) => {
 
 	if (startHour < WORK_START_HOUR || startHour + duration > WORK_END_HOUR) {
 		console.log('🔴 Отклонено: запись выходит за пределы рабочего дня')
-		return res
-			.status(400)
-			.json({
-				error:
-					'Запись с такой длительностью не помещается в рабочий день, выберите время раньше',
-			})
+		return res.status(400).json({
+			error:
+				'Запись с такой длительностью не помещается в рабочий день, выберите время раньше',
+		})
 	}
 
 	if (hoursUntilAppointment(date, time) < 0) {
@@ -394,12 +392,10 @@ router.post('/', authMiddleware, async (req, res) => {
 			'duration:',
 			duration,
 		)
-		return res
-			.status(400)
-			.json({
-				error:
-					'Это время уже занято (с учётом длительности услуги), выберите другое',
-			})
+		return res.status(400).json({
+			error:
+				'Это время уже занято (с учётом длительности услуги), выберите другое',
+		})
 	}
 
 	const appointment = await prisma.appointment.create({
@@ -533,12 +529,10 @@ router.patch('/:id/reschedule', authMiddleware, async (req, res) => {
 	const startHour = timeToHour(time)
 
 	if (startHour < WORK_START_HOUR || startHour + duration > WORK_END_HOUR) {
-		return res
-			.status(400)
-			.json({
-				error:
-					'Запись с такой длительностью не помещается в рабочий день, выберите время раньше',
-			})
+		return res.status(400).json({
+			error:
+				'Запись с такой длительностью не помещается в рабочий день, выберите время раньше',
+		})
 	}
 
 	if (hoursUntilAppointment(date, time) < 0) {

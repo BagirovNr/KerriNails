@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth')
 const appointmentRoutes = require('./routes/appointments')
 const adminRoutes = require('./routes/admin')
 const telegramRoutes = require('./routes/telegram')
+const scheduleRoutes = require('./routes/schedule')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -32,6 +33,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/appointments', appointmentRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/telegram', telegramRoutes)
+app.use('/api/schedule', scheduleRoutes) // публичные роуты (next-slot)
+app.use('/api/admin/schedule', scheduleRoutes) // admin-роуты (blocks CRUD, manual booking)
 
 app.get('/', (req, res) =>
 	res.json({ message: 'Kerri Nails API is running ✅' }),

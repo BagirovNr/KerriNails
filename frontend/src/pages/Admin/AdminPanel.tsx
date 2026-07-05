@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../../utils/api'
+import ScheduleTab from './ScheduleTab'
 
 interface Appointment {
 	id: string
@@ -301,7 +302,7 @@ function CalendarTab({ appointments }: { appointments: Appointment[] }) {
 
 // ─── Основной компонент AdminPanel ────────────────────────────────────────────
 
-type Tab = 'appointments' | 'calendar' | 'stats'
+type Tab = 'appointments' | 'calendar' | 'stats' | 'schedule'
 
 export default function AdminPanel() {
 	const { t } = useTranslation()
@@ -361,6 +362,7 @@ export default function AdminPanel() {
 	const TABS: { key: Tab; label: string; icon: string }[] = [
 		{ key: 'appointments', label: 'Записи', icon: '📋' },
 		{ key: 'calendar', label: 'Календарь', icon: '📅' },
+		{ key: 'schedule', label: 'Расписание', icon: '🗂' },
 		{ key: 'stats', label: 'Статистика', icon: '📊' },
 	]
 
@@ -404,6 +406,9 @@ export default function AdminPanel() {
 				<>
 					{/* Календарь */}
 					{tab === 'calendar' && <CalendarTab appointments={appointments} />}
+
+					{/* Расписание */}
+					{tab === 'schedule' && <ScheduleTab appointments={appointments} />}
 
 					{/* Статистика */}
 					{tab === 'stats' && stats && (

@@ -1,5 +1,5 @@
 import { useAdminData } from '../../hooks/useAdminData'
-import ScheduleTab from './ScheduleTab'
+import ScheduleTab from './'
 
 export default function ScheduleTabRoute() {
 	const { appointments } = useAdminData()

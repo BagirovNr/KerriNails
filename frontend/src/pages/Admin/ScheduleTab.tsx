@@ -1055,6 +1055,7 @@ export default function ScheduleTab({
 
 			{/* Месячный вид */}
 			{view === 'month' && (
+<<<<<<< HEAD
 				<div className='overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0'>
 					<div className='min-w-[640px] sm:min-w-0'>
 						<div className='grid grid-cols-7 gap-1 mb-1'>
@@ -1076,6 +1077,27 @@ export default function ScheduleTab({
 								),
 							)}
 						</div>
+=======
+				<div>
+					<div className='grid grid-cols-7 gap-1 mb-1'>
+						{DAY_NAMES_SHORT.map(d => (
+							<div
+								key={d}
+								className='text-center text-xs font-semibold text-gray-500 py-1'
+							>
+								{d}
+							</div>
+						))}
+					</div>
+					<div className='grid grid-cols-7 gap-1'>
+						{calDays.map((date, i) =>
+							date ? (
+								<DayCell key={date} date={date} isMonthView />
+							) : (
+								<div key={i} />
+							),
+						)}
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
 					</div>
 				</div>
 			)}

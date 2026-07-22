@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../hooks/useAuth'
-import { SERVICES } from '../../utils/data'
+import { useServices } from '../../hooks/useServices'
 import { apiFetch } from '../../utils/api'
 import { todayInSalonTZ, isSlotPast } from '../../utils/time'
 
@@ -48,6 +48,7 @@ function formatDateRu(dateStr: string): string {
 export default function BookingModal({ onClose }: Props) {
 	const { t } = useTranslation()
 	const { token, user } = useAuth()
+	const { services } = useServices()
 	const [step, setStep] = useState(1)
 	const [selectedServices, setSelectedServices] = useState<string[]>([])
 	const [date, setDate] = useState(today())
@@ -75,7 +76,7 @@ export default function BookingModal({ onClose }: Props) {
 		)
 	}
 
-	const totalPrice = SERVICES.filter(s =>
+	const totalPrice = services.filter(s =>
 		selectedServices.includes(s.name),
 	).reduce((sum, s) => sum + s.price, 0)
 
@@ -199,7 +200,7 @@ export default function BookingModal({ onClose }: Props) {
 									педикюр)
 								</p>
 								<div className='flex flex-col gap-2 max-h-64 overflow-y-auto pr-1'>
-									{SERVICES.map(s => {
+									{services.map(s => {
 										const checked = selectedServices.includes(s.name)
 										return (
 											<button

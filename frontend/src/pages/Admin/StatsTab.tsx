@@ -4,70 +4,17 @@ import gsap from 'gsap'
 import { useAdminData } from '../../hooks/useAdminData'
 
 export default function StatsTab() {
-<<<<<<< HEAD
 	const { stats, loading, error, reload } = useAdminData()
-=======
-<<<<<<< HEAD
-	const { stats, loading, error, reload } = useAdminData()
-=======
-	const { stats } = useAdminData()
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	const gridRef = useRef<HTMLDivElement>(null)
 
 	const cards = stats
 		? [
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 				{ label: 'Всего записей', value: stats.total, icon: '📋', accent: 'text-pink-400 bg-pink-500/10' },
 				{ label: 'Ожидают', value: stats.pending, icon: '⏳', accent: 'text-yellow-300 bg-yellow-500/10' },
 				{ label: 'Подтверждены', value: stats.confirmed, icon: '✅', accent: 'text-green-300 bg-green-500/10' },
 				{ label: 'Завершены', value: stats.completed, icon: '🏁', accent: 'text-blue-300 bg-blue-500/10' },
 				{ label: 'Отменены', value: stats.cancelled, icon: '✕', accent: 'text-red-400 bg-red-500/10' },
 				{ label: 'Клиентов', value: stats.totalClients, icon: '👥', accent: 'text-purple-300 bg-purple-500/10' },
-<<<<<<< HEAD
-=======
-=======
-				{
-					label: 'Всего записей',
-					value: stats.total,
-					icon: '📋',
-					accent: 'text-pink-400 bg-pink-500/10',
-				},
-				{
-					label: 'Ожидают',
-					value: stats.pending,
-					icon: '⏳',
-					accent: 'text-yellow-300 bg-yellow-500/10',
-				},
-				{
-					label: 'Подтверждены',
-					value: stats.confirmed,
-					icon: '✅',
-					accent: 'text-green-300 bg-green-500/10',
-				},
-				{
-					label: 'Завершены',
-					value: stats.completed,
-					icon: '🏁',
-					accent: 'text-blue-300 bg-blue-500/10',
-				},
-				{
-					label: 'Отменены',
-					value: stats.cancelled,
-					icon: '✕',
-					accent: 'text-red-400 bg-red-500/10',
-				},
-				{
-					label: 'Клиентов',
-					value: stats.totalClients,
-					icon: '👥',
-					accent: 'text-purple-300 bg-purple-500/10',
-				},
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 			]
 		: []
 
@@ -85,10 +32,6 @@ export default function StatsTab() {
 		{ scope: gridRef, dependencies: [stats] },
 	)
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	if (!stats) {
 		return (
 			<div>
@@ -116,12 +59,6 @@ export default function StatsTab() {
 			</div>
 		)
 	}
-<<<<<<< HEAD
-=======
-=======
-	if (!stats) return null
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 
 	return (
 		<div ref={gridRef}>
@@ -134,17 +71,7 @@ export default function StatsTab() {
 						key={s.label}
 						className='stat-card bg-gray-900 border border-gray-800 rounded-2xl p-5 shrink-0 w-40 snap-start'
 					>
-<<<<<<< HEAD
 						<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base mb-3 ${s.accent}`}>
-=======
-<<<<<<< HEAD
-						<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base mb-3 ${s.accent}`}>
-=======
-						<div
-							className={`w-9 h-9 rounded-xl flex items-center justify-center text-base mb-3 ${s.accent}`}
-						>
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 							{s.icon}
 						</div>
 						<p className='text-3xl font-bold text-gray-100 mb-1'>{s.value}</p>
@@ -160,17 +87,7 @@ export default function StatsTab() {
 						key={s.label}
 						className='stat-card bg-gray-900 border border-gray-800 rounded-2xl p-5 hover:border-gray-700 transition-colors'
 					>
-<<<<<<< HEAD
 						<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base mb-3 ${s.accent}`}>
-=======
-<<<<<<< HEAD
-						<div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base mb-3 ${s.accent}`}>
-=======
-						<div
-							className={`w-9 h-9 rounded-xl flex items-center justify-center text-base mb-3 ${s.accent}`}
-						>
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 							{s.icon}
 						</div>
 						<p className='text-3xl font-bold text-gray-100 mb-1'>{s.value}</p>

@@ -1,18 +1,4 @@
-<<<<<<< HEAD
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
-=======
-<<<<<<< HEAD
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
-=======
-import {
-	createContext,
-	useContext,
-	useState,
-	useCallback,
-	ReactNode,
-} from 'react'
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 import { useAuth } from './useAuth'
 import { apiFetch } from '../utils/api'
 
@@ -44,14 +30,7 @@ interface AdminDataContextType {
 	appointments: Appointment[]
 	stats: Stats | null
 	loading: boolean
-<<<<<<< HEAD
 	error: string | null
-=======
-<<<<<<< HEAD
-	error: string | null
-=======
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	reload: () => Promise<void>
 	updateStatus: (id: string, status: string) => Promise<void>
 }
@@ -63,10 +42,6 @@ export function AdminDataProvider({ children }: { children: ReactNode }) {
 	const [appointments, setAppointments] = useState<Appointment[]>([])
 	const [stats, setStats] = useState<Stats | null>(null)
 	const [loading, setLoading] = useState(true)
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	const [error, setError] = useState<string | null>(null)
 
 	const reload = useCallback(async () => {
@@ -90,26 +65,6 @@ export function AdminDataProvider({ children }: { children: ReactNode }) {
 		} catch (e: any) {
 			console.error('[useAdminData] не удалось загрузить данные дашборда:', e)
 			setError(e?.message || 'Не удалось загрузить данные')
-<<<<<<< HEAD
-=======
-=======
-
-	const reload = useCallback(async () => {
-		if (!token) return
-		setLoading(true)
-		try {
-			const [appts, st] = await Promise.all([
-				apiFetch('/api/admin/appointments', {
-					headers: { Authorization: `Bearer ${token}` },
-				}).then(r => r.json()),
-				apiFetch('/api/admin/stats', {
-					headers: { Authorization: `Bearer ${token}` },
-				}).then(r => r.json()),
-			])
-			setAppointments(appts)
-			setStats(st)
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 		} finally {
 			setLoading(false)
 		}
@@ -125,34 +80,14 @@ export function AdminDataProvider({ children }: { children: ReactNode }) {
 				},
 				body: JSON.stringify({ status }),
 			})
-<<<<<<< HEAD
 			setAppointments(prev => prev.map(a => (a.id === id ? { ...a, status } : a)))
-=======
-<<<<<<< HEAD
-			setAppointments(prev => prev.map(a => (a.id === id ? { ...a, status } : a)))
-=======
-			setAppointments(prev =>
-				prev.map(a => (a.id === id ? { ...a, status } : a)),
-			)
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 			await reload()
 		},
 		[token, reload],
 	)
 
 	return (
-<<<<<<< HEAD
 		<AdminDataContext.Provider value={{ appointments, stats, loading, error, reload, updateStatus }}>
-=======
-<<<<<<< HEAD
-		<AdminDataContext.Provider value={{ appointments, stats, loading, error, reload, updateStatus }}>
-=======
-		<AdminDataContext.Provider
-			value={{ appointments, stats, loading, reload, updateStatus }}
-		>
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 			{children}
 		</AdminDataContext.Provider>
 	)
@@ -160,15 +95,6 @@ export function AdminDataProvider({ children }: { children: ReactNode }) {
 
 export function useAdminData() {
 	const ctx = useContext(AdminDataContext)
-<<<<<<< HEAD
 	if (!ctx) throw new Error('useAdminData must be used inside AdminDataProvider')
-=======
-<<<<<<< HEAD
-	if (!ctx) throw new Error('useAdminData must be used inside AdminDataProvider')
-=======
-	if (!ctx)
-		throw new Error('useAdminData must be used inside AdminDataProvider')
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	return ctx
 }

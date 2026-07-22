@@ -3,14 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import { useAuth } from '../../hooks/useAuth'
-<<<<<<< HEAD
 import SideBanners from './SideBanners'
-=======
-<<<<<<< HEAD
-import SideBanners from './SideBanners'
-=======
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 
 // Минималистичная ромашка — тонкие лепестки, контурный стиль
 function Daisy({
@@ -75,16 +68,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
 	// Админ не должен видеть публичный сайт — всегда уводим его в панель управления
 	useEffect(() => {
-<<<<<<< HEAD
 		if (!loading && user?.role === 'admin') navigate('/dashboard', { replace: true })
-=======
-<<<<<<< HEAD
-		if (!loading && user?.role === 'admin') navigate('/dashboard', { replace: true })
-=======
-		if (!loading && user?.role === 'admin')
-			navigate('/dashboard', { replace: true })
->>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
->>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	}, [loading, user, navigate])
 
 	return (

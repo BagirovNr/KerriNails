@@ -43,6 +43,49 @@ model Appointment {
   createdAt  DateTime @default(now())
 }
 
+// Услуги и цены — редактируются администратором через /dashboard/services,
+// изменения сразу видны на публичном сайте (без правок кода/деплоя)
+model Service {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  category    String   // manicure | pedicure | design | extension | care
+  name        String
+  price       Int
+  description String   @default("")
+  active      Boolean  @default(true) // false — скрыта с публичного сайта, но не удалена
+  order       Int      @default(0)    // порядок отображения внутри категории
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Фото портфолио. Картинка хранится прямо в БД как base64 (data URI) —
+// без внешнего файлового хранилища/S3. Фронтенд сжимает фото перед отправкой
+// (см. compressImage в pages/Admin/PortfolioTab.tsx), поэтому размер строки
+// остаётся разумным (обычно 100–400 КБ на фото).
+model PortfolioItem {
+  id          String   @id @default(uuid())
+  imageData   String   @db.Text
+  description String   @default("")
+  category    String   // manicure | pedicure | design | extension
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Баннеры сбоку сайта — акции/реклама с датами показа. Картинка (если есть)
+// хранится как base64, как в PortfolioItem; если картинки нет — показывается
+// текст. Показывается только в промежутке startDate..endDate (см. GET /api/banners).
+model Banner {
+  id        String   @id @default(uuid())
+  text      String   @default("")
+  imageData String?  @db.Text
+  linkUrl   String   @default("")
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Блоки расписания мастера: выходные, отпуск, заблокированные слоты
 model ScheduleBlock {
   id        String   @id @default(uuid())

@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { SERVICES } from '../../utils/data'
 import { useAuth } from '../../hooks/useAuth'
-import { useServices } from '../../hooks/useServices'
-import { getServiceImage } from '../../utils/serviceImages'
 import AuthModal from '../../components/forms/AuthModal'
 import BookingModal from '../../components/BookingForm/BookingModal'
 
@@ -15,12 +14,11 @@ const CAT_LABELS: Record<string, string> = {
 export default function Services() {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { services } = useServices()
   const [cat, setCat] = useState('all')
   const [authOpen, setAuthOpen] = useState(false)
   const [bookOpen, setBookOpen] = useState(false)
 
-  const filtered = cat === 'all' ? services : services.filter(s => s.category === cat)
+  const filtered = cat === 'all' ? SERVICES : SERVICES.filter(s => s.category === cat)
   const handleBook = () => user ? setBookOpen(true) : setAuthOpen(true)
 
   return (
@@ -45,7 +43,7 @@ export default function Services() {
         {filtered.map(s => (
           <div key={s.id} className='group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-pink-100 transition-all duration-300 hover:-translate-y-1'>
             <div className='h-48 overflow-hidden relative'>
-              <img src={getServiceImage(s.category)} alt={s.name} className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'/>
+              <img src={s.img} alt={s.name} className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'/>
               <span className='absolute top-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-pink-600 text-xs font-semibold rounded-full'>
                 {CAT_LABELS[s.category]}
               </span>

@@ -1,9 +1,6 @@
-import { ReactNode, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { ReactNode } from 'react'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
-import { useAuth } from '../../hooks/useAuth'
-import SideBanners from './SideBanners'
 
 // Минималистичная ромашка — тонкие лепестки, контурный стиль
 function Daisy({
@@ -63,22 +60,12 @@ function Daisy({
 }
 
 export default function Layout({ children }: { children: ReactNode }) {
-	const { user, loading } = useAuth()
-	const navigate = useNavigate()
-
-	// Админ не должен видеть публичный сайт — всегда уводим его в панель управления
-	useEffect(() => {
-		if (!loading && user?.role === 'admin') navigate('/dashboard', { replace: true })
-	}, [loading, user, navigate])
-
 	return (
 		<div
 			className='min-h-screen flex flex-col overflow-x-hidden'
 			style={{ position: 'relative' }}
 		>
 			<Header />
-
-			<SideBanners />
 
 			{/* Ромашки левая сторона */}
 			<div

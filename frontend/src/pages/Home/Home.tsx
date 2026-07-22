@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { SERVICES } from '../../utils/data'
 import { useAuth } from '../../hooks/useAuth'
-import { useServices } from '../../hooks/useServices'
-import { getServiceImage } from '../../utils/serviceImages'
 import AuthModal from '../../components/forms/AuthModal'
 import BookingModal from '../../components/BookingForm/BookingModal'
 import ReviewsCarousel from '../../components/Reviews/ReviewsCarousel'
@@ -24,7 +23,6 @@ const WHY = [
 
 export default function Home() {
 	const { t } = useTranslation()
-	const { services } = useServices()
 	const { user } = useAuth()
 	const [authOpen, setAuthOpen] = useState(false)
 	const [bookOpen, setBookOpen] = useState(false)
@@ -105,7 +103,7 @@ export default function Home() {
 						Выберите процедуру и запишитесь онлайн
 					</p>
 					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5'>
-						{services.slice(0, 4).map((s, i) => (
+						{SERVICES.slice(0, 4).map((s, i) => (
 							<div
 								key={s.id}
 								className='group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:shadow-pink-100 transition-all duration-300 hover:-translate-y-1'
@@ -113,7 +111,7 @@ export default function Home() {
 							>
 								<div className='h-40 overflow-hidden'>
 									<img
-										src={getServiceImage(s.category)}
+										src={s.img}
 										alt={s.name}
 										className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-500'
 									/>

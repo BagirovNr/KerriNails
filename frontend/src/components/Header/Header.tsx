@@ -118,7 +118,7 @@ export default function Header() {
 							<div className='flex items-center gap-2'>
 								{user.role === 'admin' && (
 									<Link
-										to='/dashboard'
+										to='/admin'
 										className='hidden sm:inline-flex text-xs px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full font-medium hover:bg-purple-200 transition-colors'
 									>
 										Админ
@@ -159,7 +159,7 @@ export default function Header() {
 								<button
 									onClick={() =>
 										navigate(
-											user.role === 'admin' ? '/dashboard' : '/my-appointments',
+											user.role === 'admin' ? '/admin' : '/my-appointments',
 										)
 									}
 									aria-label={
@@ -252,7 +252,7 @@ export default function Header() {
 								{user.role === 'admin' && (
 									<button
 										onClick={() => {
-											navigate('/dashboard')
+											navigate('/admin')
 											closeMenu()
 										}}
 										className='flex items-center gap-2 text-sm text-purple-700 bg-purple-50 rounded-lg px-3 py-2.5 font-semibold hover:bg-purple-100 transition-colors text-left'

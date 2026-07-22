@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FaWhatsapp, FaTelegram, FaArrowRightLong } from 'react-icons/fa6'
 import { useAuth } from '../../hooks/useAuth'
@@ -40,15 +40,9 @@ const TILES = (t: (k: string) => string, onBook: () => void) => [
 
 export default function LandingPage() {
 	const { t } = useTranslation()
-	const { user, loading } = useAuth()
-	const navigate = useNavigate()
+	const { user } = useAuth()
 	const [authOpen, setAuthOpen] = useState(false)
 	const [bookOpen, setBookOpen] = useState(false)
-
-	// Авторизованный админ сразу попадает в панель управления, минуя публичный сайт
-	useEffect(() => {
-		if (!loading && user?.role === 'admin') navigate('/dashboard', { replace: true })
-	}, [loading, user, navigate])
 
 	const handleBook = () => (user ? setBookOpen(true) : setAuthOpen(true))
 

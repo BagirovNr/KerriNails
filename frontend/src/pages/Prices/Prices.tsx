@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { SERVICES } from '../../utils/data'
 import { useAuth } from '../../hooks/useAuth'
-import { useServices } from '../../hooks/useServices'
 import AuthModal from '../../components/forms/AuthModal'
 import BookingModal from '../../components/BookingForm/BookingModal'
 
@@ -11,13 +11,12 @@ const LABELS: Record<string, string> = { all:'Все', manicure:'Маникюр'
 export default function Prices() {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const { services } = useServices()
   const [cat, setCat] = useState('all')
   const [authOpen, setAuthOpen] = useState(false)
   const [bookOpen, setBookOpen] = useState(false)
   const handleBook = () => user ? setBookOpen(true) : setAuthOpen(true)
 
-  const filtered = cat === 'all' ? services : services.filter(s => s.category === cat)
+  const filtered = cat === 'all' ? SERVICES : SERVICES.filter(s => s.category === cat)
 
   return (
     <div className='py-12 px-4 max-w-5xl mx-auto'>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../../hooks/useAuth'
 import { apiFetch } from '../../utils/api'
-import { useServices } from '../../hooks/useServices'
+import { SERVICES } from '../../utils/data'
 import { todayInSalonTZ } from '../../utils/time'
 
 // ─── Типы ─────────────────────────────────────────────────────────────────────
@@ -112,20 +112,20 @@ function Badge({ label, color }: { label: string; color: string }) {
 
 function blockLabel(b: ScheduleBlock) {
 	if (b.type === 'day_off')
-		return { text: 'Выходной', color: 'bg-red-500/15 text-red-300' }
+		return { text: 'Выходной', color: 'bg-red-100 text-red-700' }
 	if (b.type === 'vacation')
-		return { text: 'Отпуск', color: 'bg-orange-500/15 text-orange-300' }
+		return { text: 'Отпуск', color: 'bg-orange-100 text-orange-700' }
 	return {
 		text: `${b.startTime}–${b.endTime}`,
-		color: 'bg-gray-800 text-gray-200',
+		color: 'bg-gray-100 text-gray-700',
 	}
 }
 
 function statusColor(s: string) {
-	if (s === 'confirmed') return 'bg-green-500/15 text-green-300'
-	if (s === 'pending') return 'bg-yellow-500/15 text-yellow-300'
-	if (s === 'cancelled') return 'bg-red-500/15 text-red-400'
-	return 'bg-gray-800 text-gray-300'
+	if (s === 'confirmed') return 'bg-green-100 text-green-700'
+	if (s === 'pending') return 'bg-yellow-100 text-yellow-700'
+	if (s === 'cancelled') return 'bg-red-100 text-red-600'
+	return 'bg-gray-100 text-gray-600'
 }
 
 // ─── Модалка для одного дня (блоки + записи + добавление) ────────────────────
@@ -197,19 +197,19 @@ function DayModal({
 	return (
 		<div className='fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4'>
 			<div
-				className='absolute inset-0 bg-black/70 backdrop-blur-sm'
+				className='absolute inset-0 bg-black/50 backdrop-blur-sm'
 				onClick={onClose}
 			/>
-			<div className='relative w-full max-w-lg bg-gray-900 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden max-h-[90vh] flex flex-col'>
+			<div className='relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col'>
 				<div className='h-1 bg-gradient-to-r from-pink-400 to-rose-400' />
-				<div className='flex items-center justify-between px-6 py-4 border-b border-gray-800'>
+				<div className='flex items-center justify-between px-6 py-4 border-b border-gray-100'>
 					<div>
-						<p className='font-bold text-gray-100'>{formatDate(date)}</p>
-						<p className='text-xs text-gray-500'>{getDayName(date)}</p>
+						<p className='font-bold text-gray-800'>{formatDate(date)}</p>
+						<p className='text-xs text-gray-400'>{getDayName(date)}</p>
 					</div>
 					<button
 						onClick={onClose}
-						className='w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 text-gray-500 text-xl'
+						className='w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 text-xl'
 					>
 						×
 					</button>
@@ -219,25 +219,25 @@ function DayModal({
 					{/* Записи */}
 					{dayAppts.length > 0 && (
 						<div>
-							<p className='text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2'>
+							<p className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
 								Записи
 							</p>
 							<div className='space-y-2'>
 								{dayAppts.map(a => (
 									<div
 										key={a.id}
-										className='flex items-center gap-3 bg-gray-800/60 rounded-xl px-3 py-2.5'
+										className='flex items-center gap-3 bg-gray-50 rounded-xl px-3 py-2.5'
 									>
 										<div className='w-10 text-center'>
-											<p className='text-sm font-bold text-gray-200'>
+											<p className='text-sm font-bold text-gray-700'>
 												{a.time}
 											</p>
 										</div>
 										<div className='flex-1 min-w-0'>
-											<p className='text-sm font-medium text-gray-100 truncate'>
+											<p className='text-sm font-medium text-gray-800 truncate'>
 												{a.userName}
 											</p>
-											<p className='text-xs text-gray-500 truncate'>
+											<p className='text-xs text-gray-400 truncate'>
 												{a.service}
 											</p>
 										</div>
@@ -251,7 +251,7 @@ function DayModal({
 													: a.status}
 										</span>
 										{a.source === 'manual' && (
-											<span className='text-[10px] bg-purple-500/10 text-purple-400 px-1.5 py-0.5 rounded-full'>
+											<span className='text-[10px] bg-purple-50 text-purple-600 px-1.5 py-0.5 rounded-full'>
 												ручная
 											</span>
 										)}
@@ -264,7 +264,7 @@ function DayModal({
 					{/* Блоки расписания */}
 					{blocks.length > 0 && (
 						<div>
-							<p className='text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2'>
+							<p className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2'>
 								Ограничения
 							</p>
 							<div className='space-y-2'>
@@ -273,15 +273,15 @@ function DayModal({
 									return (
 										<div
 											key={b.id}
-											className='flex items-center gap-3 bg-gray-800/60 rounded-xl px-3 py-2.5'
+											className='flex items-center gap-3 bg-gray-50 rounded-xl px-3 py-2.5'
 										>
 											<Badge label={text} color={color} />
-											<span className='flex-1 text-xs text-gray-400'>
+											<span className='flex-1 text-xs text-gray-500'>
 												{b.reason || '—'}
 											</span>
 											<button
 												onClick={() => deleteBlock(b.id)}
-												className='text-red-400 hover:text-red-300 text-sm transition-colors'
+												className='text-red-400 hover:text-red-600 text-sm transition-colors'
 												title='Удалить'
 											>
 												✕
@@ -295,8 +295,8 @@ function DayModal({
 
 					{/* Форма добавления */}
 					{!isDayOff && (
-						<div className='border-t border-gray-800 pt-4'>
-							<p className='text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3'>
+						<div className='border-t border-gray-100 pt-4'>
+							<p className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3'>
 								Добавить ограничение
 							</p>
 							<div className='flex gap-2 mb-3'>
@@ -304,7 +304,7 @@ function DayModal({
 									onClick={() =>
 										setAddType(addType === 'day_off' ? '' : 'day_off')
 									}
-									className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${addType === 'day_off' ? 'border-red-500/60 bg-red-500/10 text-red-300' : 'border-gray-700 hover:border-red-500/40'}`}
+									className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${addType === 'day_off' ? 'border-red-400 bg-red-50 text-red-700' : 'border-gray-200 hover:border-red-200'}`}
 								>
 									🚫 Выходной
 								</button>
@@ -312,7 +312,7 @@ function DayModal({
 									onClick={() =>
 										setAddType(addType === 'blocked_slot' ? '' : 'blocked_slot')
 									}
-									className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${addType === 'blocked_slot' ? 'border-gray-600 bg-gray-800/60 text-gray-200' : 'border-gray-700 hover:border-gray-600'}`}
+									className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${addType === 'blocked_slot' ? 'border-gray-400 bg-gray-50 text-gray-700' : 'border-gray-200 hover:border-gray-300'}`}
 								>
 									🔒 Блок слота
 								</button>
@@ -321,13 +321,13 @@ function DayModal({
 							{addType === 'blocked_slot' && (
 								<div className='flex gap-2 mb-3'>
 									<div className='flex-1'>
-										<label className='text-xs text-gray-500 block mb-1'>
+										<label className='text-xs text-gray-400 block mb-1'>
 											С
 										</label>
 										<select
 											value={startTime}
 											onChange={e => setStartTime(e.target.value)}
-											className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-pink-400'
+											className='w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-pink-400'
 										>
 											{WORK_HOURS.map(h => (
 												<option key={h}>{h}</option>
@@ -335,13 +335,13 @@ function DayModal({
 										</select>
 									</div>
 									<div className='flex-1'>
-										<label className='text-xs text-gray-500 block mb-1'>
+										<label className='text-xs text-gray-400 block mb-1'>
 											До
 										</label>
 										<select
 											value={endTime}
 											onChange={e => setEndTime(e.target.value)}
-											className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-pink-400'
+											className='w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:border-pink-400'
 										>
 											{WORK_HOURS.filter(h => h > startTime).map(h => (
 												<option key={h}>{h}</option>
@@ -357,12 +357,12 @@ function DayModal({
 										placeholder='Причина (необязательно)'
 										value={reason}
 										onChange={e => setReason(e.target.value)}
-										className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-pink-400 mb-2'
+										className='w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-pink-400 mb-2'
 									/>
 									<button
 										onClick={save}
 										disabled={saving}
-										className='w-full py-2.5 bg-pink-500 hover:bg-pink-600 disabled:bg-pink-500/20 text-white rounded-xl text-sm font-medium transition-all'
+										className='w-full py-2.5 bg-pink-500 hover:bg-pink-600 disabled:bg-pink-200 text-white rounded-xl text-sm font-medium transition-all'
 									>
 										{saving ? 'Сохранение...' : 'Сохранить'}
 									</button>
@@ -372,7 +372,7 @@ function DayModal({
 					)}
 
 					{isDayOff && (
-						<p className='text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3 text-center'>
+						<p className='text-sm text-red-500 bg-red-50 rounded-xl px-4 py-3 text-center'>
 							День помечен как выходной. Удалите его, чтобы добавить другие
 							ограничения.
 						</p>
@@ -431,58 +431,58 @@ function VacationModal({
 	return (
 		<div className='fixed inset-0 z-50 flex items-center justify-center p-4'>
 			<div
-				className='absolute inset-0 bg-black/70 backdrop-blur-sm'
+				className='absolute inset-0 bg-black/50 backdrop-blur-sm'
 				onClick={onClose}
 			/>
-			<div className='relative w-full max-w-sm bg-gray-900 rounded-2xl shadow-2xl shadow-black/40 p-6'>
-				<h3 className='font-bold text-gray-100 mb-4 text-lg'>
+			<div className='relative w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6'>
+				<h3 className='font-bold text-gray-800 mb-4 text-lg'>
 					🌴 Добавить отпуск
 				</h3>
 				<div className='space-y-3'>
 					<div>
-						<label className='text-xs text-gray-400 block mb-1'>Начало</label>
+						<label className='text-xs text-gray-500 block mb-1'>Начало</label>
 						<input
 							type='date'
 							value={dateFrom}
 							min={today}
 							onChange={e => setDateFrom(e.target.value)}
-							className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+							className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 						/>
 					</div>
 					<div>
-						<label className='text-xs text-gray-400 block mb-1'>Конец</label>
+						<label className='text-xs text-gray-500 block mb-1'>Конец</label>
 						<input
 							type='date'
 							value={dateTo}
 							min={dateFrom}
 							onChange={e => setDateTo(e.target.value)}
-							className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+							className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 						/>
 					</div>
 					<div>
-						<label className='text-xs text-gray-400 block mb-1'>
+						<label className='text-xs text-gray-500 block mb-1'>
 							Причина (необязательно)
 						</label>
 						<input
 							value={reason}
 							onChange={e => setReason(e.target.value)}
 							placeholder='Отпуск'
-							className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+							className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 						/>
 					</div>
 				</div>
-				{error && <p className='text-red-400 text-xs mt-2'>{error}</p>}
+				{error && <p className='text-red-500 text-xs mt-2'>{error}</p>}
 				<div className='flex gap-2 mt-5'>
 					<button
 						onClick={onClose}
-						className='flex-1 py-2.5 border border-gray-700 rounded-xl text-sm hover:bg-gray-800/60'
+						className='flex-1 py-2.5 border border-gray-200 rounded-xl text-sm hover:bg-gray-50'
 					>
 						Отмена
 					</button>
 					<button
 						onClick={save}
 						disabled={saving}
-						className='flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-500/20 text-white rounded-xl text-sm font-medium'
+						className='flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-200 text-white rounded-xl text-sm font-medium'
 					>
 						{saving ? 'Сохранение...' : 'Сохранить'}
 					</button>
@@ -504,7 +504,6 @@ function ManualBookingModal({
 	preselectedDate?: string
 }) {
 	const { token } = useAuth()
-	const { services } = useServices()
 	const today = todayInSalonTZ()
 
 	const [clientMode, setClientMode] = useState<'search' | 'new'>('search')
@@ -516,16 +515,11 @@ function ManualBookingModal({
 	const [guestName, setGuestName] = useState('')
 	const [guestPhone, setGuestPhone] = useState('')
 	const [guestEmail, setGuestEmail] = useState('')
-	const [service, setService] = useState(services[0]?.name || '')
+	const [service, setService] = useState(SERVICES[0]?.name || '')
 	const [date, setDate] = useState(preselectedDate || today)
 	const [time, setTime] = useState('10:00')
 	const [slots, setSlots] = useState<string[]>([])
 	const [comment, setComment] = useState('')
-
-	// Если модалка открылась раньше, чем прогрузился список услуг — подставляем первую, как только он появится
-	useEffect(() => {
-		if (!service && services.length > 0) setService(services[0].name)
-	}, [services, service])
 	const [saving, setSaving] = useState(false)
 	const [error, setError] = useState('')
 
@@ -595,18 +589,18 @@ function ManualBookingModal({
 	return (
 		<div className='fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4'>
 			<div
-				className='absolute inset-0 bg-black/70 backdrop-blur-sm'
+				className='absolute inset-0 bg-black/50 backdrop-blur-sm'
 				onClick={onClose}
 			/>
-			<div className='relative w-full max-w-md bg-gray-900 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden max-h-[90vh] flex flex-col'>
+			<div className='relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col'>
 				<div className='h-1 bg-gradient-to-r from-purple-400 to-pink-400' />
-				<div className='flex items-center justify-between px-6 py-4 border-b border-gray-800'>
-					<h3 className='font-bold text-gray-100'>
+				<div className='flex items-center justify-between px-6 py-4 border-b border-gray-100'>
+					<h3 className='font-bold text-gray-800'>
 						✍️ Записать клиента вручную
 					</h3>
 					<button
 						onClick={onClose}
-						className='w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-800 text-gray-500 text-xl'
+						className='w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 text-xl'
 					>
 						×
 					</button>
@@ -619,7 +613,7 @@ function ManualBookingModal({
 								setClientMode('search')
 								setSelectedClient(null)
 							}}
-							className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${clientMode === 'search' ? 'border-pink-400 bg-pink-500/10 text-pink-300' : 'border-gray-700 hover:border-gray-600'}`}
+							className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${clientMode === 'search' ? 'border-pink-400 bg-pink-50 text-pink-700' : 'border-gray-200 hover:border-gray-300'}`}
 						>
 							🔍 Найти клиента
 						</button>
@@ -629,7 +623,7 @@ function ManualBookingModal({
 								setSelectedClient(null)
 								setQuery('')
 							}}
-							className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${clientMode === 'new' ? 'border-pink-400 bg-pink-500/10 text-pink-300' : 'border-gray-700 hover:border-gray-600'}`}
+							className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-all ${clientMode === 'new' ? 'border-pink-400 bg-pink-50 text-pink-700' : 'border-gray-200 hover:border-gray-300'}`}
 						>
 							➕ Новый клиент
 						</button>
@@ -638,18 +632,18 @@ function ManualBookingModal({
 					{clientMode === 'search' && (
 						<div>
 							{selectedClient ? (
-								<div className='flex items-center gap-3 bg-pink-500/10 border border-pink-500/30 rounded-xl px-3 py-2.5'>
+								<div className='flex items-center gap-3 bg-pink-50 border border-pink-200 rounded-xl px-3 py-2.5'>
 									<div className='flex-1'>
-										<p className='text-sm font-semibold text-gray-100'>
+										<p className='text-sm font-semibold text-gray-800'>
 											{selectedClient.name}
 										</p>
-										<p className='text-xs text-gray-500'>
+										<p className='text-xs text-gray-400'>
 											{selectedClient.phone}
 										</p>
 									</div>
 									<button
 										onClick={() => setSelectedClient(null)}
-										className='text-gray-500 hover:text-gray-300 text-sm'
+										className='text-gray-400 hover:text-gray-600 text-sm'
 									>
 										✕
 									</button>
@@ -660,10 +654,10 @@ function ManualBookingModal({
 										value={query}
 										onChange={e => setQuery(e.target.value)}
 										placeholder='Имя, телефон или email...'
-										className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-pink-400'
+										className='w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-pink-400'
 									/>
 									{searchResults.length > 0 && (
-										<div className='absolute top-full left-0 right-0 mt-1 bg-gray-900 border border-gray-800 rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto'>
+										<div className='absolute top-full left-0 right-0 mt-1 bg-white border border-gray-100 rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto'>
 											{searchResults.map(c => (
 												<button
 													key={c.id}
@@ -672,20 +666,20 @@ function ManualBookingModal({
 														setQuery('')
 														setSearchResults([])
 													}}
-													className='w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800/60 text-left transition-colors'
+													className='w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 text-left transition-colors'
 												>
 													<div>
-														<p className='text-sm font-medium text-gray-100'>
+														<p className='text-sm font-medium text-gray-800'>
 															{c.name}
 														</p>
-														<p className='text-xs text-gray-500'>{c.phone}</p>
+														<p className='text-xs text-gray-400'>{c.phone}</p>
 													</div>
 												</button>
 											))}
 										</div>
 									)}
 									{query.length >= 2 && searchResults.length === 0 && (
-										<p className='text-xs text-gray-500 mt-1 px-1'>
+										<p className='text-xs text-gray-400 mt-1 px-1'>
 											Не найдено — создайте нового клиента
 										</p>
 									)}
@@ -700,32 +694,32 @@ function ManualBookingModal({
 								value={guestName}
 								onChange={e => setGuestName(e.target.value)}
 								placeholder='Имя *'
-								className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+								className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 							/>
 							<input
 								value={guestPhone}
 								onChange={e => setGuestPhone(e.target.value)}
 								placeholder='Телефон * (+7...)'
-								className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+								className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 							/>
 							<input
 								value={guestEmail}
 								onChange={e => setGuestEmail(e.target.value)}
 								placeholder='Email (необязательно)'
-								className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+								className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 							/>
 						</div>
 					)}
 
 					{/* Услуга */}
 					<div>
-						<label className='text-xs text-gray-400 block mb-1'>Услуга</label>
+						<label className='text-xs text-gray-500 block mb-1'>Услуга</label>
 						<select
 							value={service}
 							onChange={e => setService(e.target.value)}
-							className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+							className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 						>
-							{services.map(s => (
+							{SERVICES.map(s => (
 								<option key={s.name} value={s.name}>
 									{s.name}
 								</option>
@@ -735,25 +729,25 @@ function ManualBookingModal({
 
 					{/* Дата */}
 					<div>
-						<label className='text-xs text-gray-400 block mb-1'>Дата</label>
+						<label className='text-xs text-gray-500 block mb-1'>Дата</label>
 						<input
 							type='date'
 							value={date}
 							min={today}
 							onChange={e => setDate(e.target.value)}
-							className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
+							className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400'
 						/>
 					</div>
 
 					{/* Время */}
 					<div>
-						<label className='text-xs text-gray-400 block mb-1'>Время</label>
+						<label className='text-xs text-gray-500 block mb-1'>Время</label>
 						<div className='grid grid-cols-5 gap-1.5'>
 							{WORK_HOURS.map(h => (
 								<button
 									key={h}
 									onClick={() => setTime(h)}
-									className={`py-1.5 rounded-lg text-xs border transition-all ${time === h ? 'border-pink-400 bg-pink-500/10 text-pink-300 font-semibold' : slots.includes(h) ? 'border-gray-700 hover:border-pink-500/40' : 'border-gray-800 bg-gray-800/60 text-gray-600 cursor-not-allowed'}`}
+									className={`py-1.5 rounded-lg text-xs border transition-all ${time === h ? 'border-pink-400 bg-pink-50 text-pink-700 font-semibold' : slots.includes(h) ? 'border-gray-200 hover:border-pink-200' : 'border-gray-100 bg-gray-50 text-gray-300 cursor-not-allowed'}`}
 									disabled={!slots.includes(h)}
 								>
 									{h}
@@ -764,24 +758,24 @@ function ManualBookingModal({
 
 					{/* Комментарий */}
 					<div>
-						<label className='text-xs text-gray-400 block mb-1'>
+						<label className='text-xs text-gray-500 block mb-1'>
 							Комментарий
 						</label>
 						<textarea
 							value={comment}
 							onChange={e => setComment(e.target.value)}
 							rows={2}
-							className='w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:border-pink-400'
+							className='w-full border border-gray-200 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:border-pink-400'
 						/>
 					</div>
 
-					{error && <p className='text-red-400 text-sm'>{error}</p>}
+					{error && <p className='text-red-500 text-sm'>{error}</p>}
 				</div>
 				<div className='px-6 pb-6 pt-2'>
 					<button
 						onClick={submit}
 						disabled={saving || (!selectedClient && clientMode === 'search')}
-						className='w-full py-3 bg-pink-500 hover:bg-pink-600 disabled:bg-pink-500/20 text-white rounded-xl text-sm font-semibold transition-all'
+						className='w-full py-3 bg-pink-500 hover:bg-pink-600 disabled:bg-pink-200 text-white rounded-xl text-sm font-semibold transition-all'
 					>
 						{saving ? 'Сохранение...' : 'Записать'}
 					</button>
@@ -894,24 +888,24 @@ export default function ScheduleTab({
 					isMonthView ? 'p-2 min-h-[80px]' : 'p-3 min-h-[120px]'
 				} ${
 					dayOff
-						? 'bg-red-500/10 border-red-500/30'
+						? 'bg-red-50 border-red-200'
 						: isPast
-							? 'bg-gray-800/60 border-gray-800 opacity-60'
+							? 'bg-gray-50 border-gray-100 opacity-60'
 							: isToday
-								? 'bg-pink-500/10 border-pink-500/60 ring-2 ring-pink-500/30'
-								: 'bg-gray-900 border-gray-800 hover:border-pink-500/40'
+								? 'bg-pink-50 border-pink-300 ring-2 ring-pink-200'
+								: 'bg-white border-gray-100 hover:border-pink-200'
 				}`}
 			>
 				<div className='flex items-center justify-between mb-1'>
 					<span
-						className={`text-sm font-bold ${isToday ? 'text-pink-400' : dayOff ? 'text-red-400' : 'text-gray-200'}`}
+						className={`text-sm font-bold ${isToday ? 'text-pink-600' : dayOff ? 'text-red-600' : 'text-gray-700'}`}
 					>
 						{isMonthView
 							? new Date(`${date}T00:00:00Z`).getUTCDate()
 							: `${DAY_NAMES_SHORT[(new Date(`${date}T00:00:00Z`).getUTCDay() + 6) % 7]}, ${formatDate(date).slice(0, 5)}`}
 					</span>
 					{dayOff && (
-						<span className='text-[10px] bg-red-500/15 text-red-400 px-1.5 py-0.5 rounded-full font-medium'>
+						<span className='text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-medium'>
 							выходной
 						</span>
 					)}
@@ -927,7 +921,7 @@ export default function ScheduleTab({
 							</div>
 						))}
 						{dayAppts.length > (isMonthView ? 2 : 4) && (
-							<p className='text-[10px] text-gray-500'>
+							<p className='text-[10px] text-gray-400'>
 								+{dayAppts.length - (isMonthView ? 2 : 4)} ещё
 							</p>
 						)}
@@ -937,7 +931,7 @@ export default function ScheduleTab({
 							.map(b => (
 								<div
 									key={b.id}
-									className='text-[11px] px-1.5 py-0.5 rounded-md bg-gray-800 text-gray-400 truncate'
+									className='text-[11px] px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-500 truncate'
 								>
 									🔒 {b.startTime}–{b.endTime}
 								</div>
@@ -950,16 +944,15 @@ export default function ScheduleTab({
 
 	return (
 		<div>
-			<h2 className='text-lg font-semibold text-gray-100 mb-5'>Расписание</h2>
 			{/* Панель управления */}
 			<div className='flex flex-wrap items-center gap-2 mb-4'>
 				{/* Переключатель вид */}
-				<div className='flex bg-gray-800 rounded-xl p-1'>
+				<div className='flex bg-gray-100 rounded-xl p-1'>
 					{(['week', 'month'] as const).map(v => (
 						<button
 							key={v}
 							onClick={() => setView(v)}
-							className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${view === v ? 'bg-gray-900 shadow text-gray-100' : 'text-gray-400 hover:text-gray-200'}`}
+							className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${view === v ? 'bg-white shadow text-gray-800' : 'text-gray-500 hover:text-gray-700'}`}
 						>
 							{v === 'week' ? '📅 Неделя' : '🗓 Месяц'}
 						</button>
@@ -971,23 +964,23 @@ export default function ScheduleTab({
 					<div className='flex items-center gap-2'>
 						<button
 							onClick={() => setWeekStart(addDays(weekStart, -7))}
-							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-700 hover:bg-gray-800/60 text-gray-300'
+							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600'
 						>
 							‹
 						</button>
-						<span className='text-sm text-gray-300 min-w-[140px] text-center'>
+						<span className='text-sm text-gray-600 min-w-[140px] text-center'>
 							{formatDate(weekStart).slice(0, 5)} –{' '}
 							{formatDate(addDays(weekStart, 6)).slice(0, 5)}
 						</span>
 						<button
 							onClick={() => setWeekStart(addDays(weekStart, 7))}
-							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-700 hover:bg-gray-800/60 text-gray-300'
+							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600'
 						>
 							›
 						</button>
 						<button
 							onClick={() => setWeekStart(getMondayOfWeek(today))}
-							className='text-xs text-pink-400 hover:text-pink-300 ml-1'
+							className='text-xs text-pink-500 hover:text-pink-700 ml-1'
 						>
 							Сегодня
 						</button>
@@ -1002,11 +995,11 @@ export default function ScheduleTab({
 									setCalYear(y => y - 1)
 								} else setCalMonth(m => m - 1)
 							}}
-							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-700 hover:bg-gray-800/60 text-gray-300'
+							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600'
 						>
 							‹
 						</button>
-						<span className='text-sm text-gray-200 min-w-[120px] text-center font-medium'>
+						<span className='text-sm text-gray-700 min-w-[120px] text-center font-medium'>
 							{MONTH_NAMES[calMonth]} {calYear}
 						</span>
 						<button
@@ -1016,7 +1009,7 @@ export default function ScheduleTab({
 									setCalYear(y => y + 1)
 								} else setCalMonth(m => m + 1)
 							}}
-							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-700 hover:bg-gray-800/60 text-gray-300'
+							className='w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600'
 						>
 							›
 						</button>
@@ -1026,7 +1019,7 @@ export default function ScheduleTab({
 				<div className='ml-auto flex gap-2'>
 					<button
 						onClick={() => setShowVacation(true)}
-						className='flex items-center gap-1.5 px-3 py-1.5 bg-orange-500/10 hover:bg-orange-500/15 border border-orange-500/30 text-orange-300 text-sm font-medium rounded-xl transition-colors'
+						className='flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-700 text-sm font-medium rounded-xl transition-colors'
 					>
 						🌴 Отпуск
 					</button>
@@ -1035,7 +1028,7 @@ export default function ScheduleTab({
 							setManualDate(undefined)
 							setShowManualBooking(true)
 						}}
-						className='flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/10 hover:bg-purple-500/15 border border-purple-500/30 text-purple-300 text-sm font-medium rounded-xl transition-colors'
+						className='flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 text-sm font-medium rounded-xl transition-colors'
 					>
 						✍️ Записать клиента
 					</button>
@@ -1044,62 +1037,58 @@ export default function ScheduleTab({
 
 			{/* Недельный вид */}
 			{view === 'week' && (
-				<div className='overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0'>
-					<div className='grid grid-cols-7 gap-2 min-w-[700px] sm:min-w-0'>
-						{weekDays.map(date => (
-							<DayCell key={date} date={date} />
-						))}
-					</div>
+				<div className='grid grid-cols-7 gap-2'>
+					{weekDays.map(date => (
+						<DayCell key={date} date={date} />
+					))}
 				</div>
 			)}
 
 			{/* Месячный вид */}
 			{view === 'month' && (
-				<div className='overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0'>
-					<div className='min-w-[640px] sm:min-w-0'>
-						<div className='grid grid-cols-7 gap-1 mb-1'>
-							{DAY_NAMES_SHORT.map(d => (
-								<div
-									key={d}
-									className='text-center text-xs font-semibold text-gray-500 py-1'
-								>
-									{d}
-								</div>
-							))}
-						</div>
-						<div className='grid grid-cols-7 gap-1'>
-							{calDays.map((date, i) =>
-								date ? (
-									<DayCell key={date} date={date} isMonthView />
-								) : (
-									<div key={i} />
-								),
-							)}
-						</div>
+				<div>
+					<div className='grid grid-cols-7 gap-1 mb-1'>
+						{DAY_NAMES_SHORT.map(d => (
+							<div
+								key={d}
+								className='text-center text-xs font-semibold text-gray-400 py-1'
+							>
+								{d}
+							</div>
+						))}
+					</div>
+					<div className='grid grid-cols-7 gap-1'>
+						{calDays.map((date, i) =>
+							date ? (
+								<DayCell key={date} date={date} isMonthView />
+							) : (
+								<div key={i} />
+							),
+						)}
 					</div>
 				</div>
 			)}
 
 			{/* Легенда */}
-			<div className='flex flex-wrap gap-3 mt-4 text-xs text-gray-400'>
+			<div className='flex flex-wrap gap-3 mt-4 text-xs text-gray-500'>
 				<span className='flex items-center gap-1.5'>
-					<span className='w-3 h-3 rounded bg-pink-500/15 border border-pink-500/60 inline-block' />
+					<span className='w-3 h-3 rounded bg-pink-100 border border-pink-300 inline-block' />
 					Сегодня
 				</span>
 				<span className='flex items-center gap-1.5'>
-					<span className='w-3 h-3 rounded bg-red-500/15 border border-red-500/30 inline-block' />
+					<span className='w-3 h-3 rounded bg-red-100 border border-red-200 inline-block' />
 					Выходной / Отпуск
 				</span>
 				<span className='flex items-center gap-1.5'>
-					<span className='w-3 h-3 rounded bg-green-500/15 inline-block' />
+					<span className='w-3 h-3 rounded bg-green-100 inline-block' />
 					Подтверждено
 				</span>
 				<span className='flex items-center gap-1.5'>
-					<span className='w-3 h-3 rounded bg-yellow-500/15 inline-block' />
+					<span className='w-3 h-3 rounded bg-yellow-100 inline-block' />
 					Ожидает
 				</span>
 				<span className='flex items-center gap-1.5'>
-					<span className='w-3 h-3 rounded bg-gray-800 inline-block' />
+					<span className='w-3 h-3 rounded bg-gray-100 inline-block' />
 					Заблокировано
 				</span>
 			</div>

@@ -2,9 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import i18n from './i18n/main'
 import { AuthProvider } from './hooks/useAuth'
-import { ServicesProvider } from './hooks/useServices'
-import { PortfolioProvider } from './hooks/usePortfolio'
-import { BannersProvider } from './hooks/useBanners'
 import './index.css'
 
 import Layout from './components/Layout/Layout'
@@ -15,23 +12,13 @@ import Portfolio from './pages/Portfolio/Portfolio'
 import Prices from './pages/Prices/Prices'
 import Contact from './pages/Contact/Contact'
 import MyAppointments from './pages/MyAppointments/MyAppointments'
-import AdminLayout from './pages/Admin/AdminLayout'
-import AppointmentsTab from './pages/Admin/AppointmentsTab'
-import AppointmentCalendar from './pages/Admin/AppointmentCalendar'
-import ScheduleTabRoute from './pages/Admin/ScheduleTabRoute'
-import ServicesTab from './pages/Admin/ServicesTab'
-import PortfolioTab from './pages/Admin/PortfolioTab'
-import BannersTab from './pages/Admin/BannersTab'
-import StatsTab from './pages/Admin/StatsTab'
+import AdminPanel from './pages/Admin/AdminPanel'
 import NotFound from './pages/NotFound/NotFound'
 
 function App() {
   return (
     <I18nextProvider i18n={i18n}>
       <AuthProvider>
-        <ServicesProvider>
-        <PortfolioProvider>
-        <BannersProvider>
         <Router>
           <Routes>
             {/* Landing — no header/footer, mobile-first hub */}
@@ -44,24 +31,11 @@ function App() {
             <Route path='/prices' element={<Layout><Prices /></Layout>} />
             <Route path='/contact' element={<Layout><Contact /></Layout>} />
             <Route path='/my-appointments' element={<Layout><MyAppointments /></Layout>} />
-
-            {/* Dashboard — своя оболочка, без публичного хедера/футера/навигации сайта */}
-            <Route path='/dashboard' element={<AdminLayout />}>
-              <Route index element={<AppointmentsTab />} />
-              <Route path='calendar' element={<AppointmentCalendar />} />
-              <Route path='schedule' element={<ScheduleTabRoute />} />
-              <Route path='services' element={<ServicesTab />} />
-              <Route path='portfolio' element={<PortfolioTab />} />
-              <Route path='banners' element={<BannersTab />} />
-              <Route path='stats' element={<StatsTab />} />
-            </Route>
+            <Route path='/admin' element={<Layout><AdminPanel /></Layout>} />
 
             <Route path='*' element={<NotFound />} />
           </Routes>
         </Router>
-        </BannersProvider>
-        </PortfolioProvider>
-        </ServicesProvider>
       </AuthProvider>
     </I18nextProvider>
   )

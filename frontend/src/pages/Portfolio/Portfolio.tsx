@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PORTFOLIO_ITEMS } from '../../utils/data'
+import { usePortfolio, type PortfolioItem as PortfolioItemType } from '../../hooks/usePortfolio'
 
 type Category = 'all' | 'manicure' | 'pedicure' | 'design' | 'extension'
 
@@ -12,7 +12,7 @@ const FILTERS: { key: Category; tKey: string }[] = [
   { key: 'extension', tKey: 'portfolio.filter_extension' },
 ]
 
-function PortfolioItem({ item, delay }: { item: typeof PORTFOLIO_ITEMS[0]; delay: number }) {
+function PortfolioItem({ item, delay }: { item: PortfolioItemType; delay: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
   const [lightbox, setLightbox] = useState(false)
@@ -35,18 +35,18 @@ function PortfolioItem({ item, delay }: { item: typeof PORTFOLIO_ITEMS[0]; delay
         style={{ transitionDelay: `${delay}ms` }}
       >
         <div className='relative overflow-hidden aspect-square'>
-          <img src={item.img} alt={item.title} className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-700'/>
+          <img src={item.imageData} alt={item.description} className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-700'/>
           <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4'>
-            <p className='text-white text-sm font-medium'>{item.title}</p>
+            <p className='text-white text-sm font-medium'>{item.description}</p>
           </div>
         </div>
       </div>
 
       {lightbox && (
         <div className='fixed inset-0 z-[200] bg-black/90 flex items-center justify-center p-4 animate-fadeIn' onClick={() => setLightbox(false)}>
-          <img src={item.img} alt={item.title} className='max-w-full max-h-full rounded-xl object-contain animate-fadeInScale'/>
+          <img src={item.imageData} alt={item.description} className='max-w-full max-h-full rounded-xl object-contain animate-fadeInScale'/>
           <button className='absolute top-4 right-4 text-white text-3xl hover:text-pink-400 transition-colors'>×</button>
-          <p className='absolute bottom-6 text-white text-sm font-medium'>{item.title}</p>
+          <p className='absolute bottom-6 text-white text-sm font-medium'>{item.description}</p>
         </div>
       )}
     </>
@@ -55,9 +55,10 @@ function PortfolioItem({ item, delay }: { item: typeof PORTFOLIO_ITEMS[0]; delay
 
 export default function Portfolio() {
   const { t } = useTranslation()
+  const { items, loading } = usePortfolio()
   const [active, setActive] = useState<Category>('all')
 
-  const filtered = active === 'all' ? PORTFOLIO_ITEMS : PORTFOLIO_ITEMS.filter(i => i.category === active)
+  const filtered = active === 'all' ? items : items.filter(i => i.category === active)
 
   return (
     <div className='py-12 px-4 max-w-6xl mx-auto'>
@@ -81,11 +82,19 @@ export default function Portfolio() {
       </div>
 
       {/* Grid */}
-      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3'>
-        {filtered.map((item, i) => (
-          <PortfolioItem key={item.id} item={item} delay={i * 60}/>
-        ))}
-      </div>
+      {loading ? (
+        <div className='flex justify-center py-16'>
+          <div className='w-8 h-8 border-2 border-pink-500 border-t-transparent rounded-full animate-spin' />
+        </div>
+      ) : filtered.length === 0 ? (
+        <p className='text-center text-gray-400 py-16'>Пока нет фото в этой категории</p>
+      ) : (
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3'>
+          {filtered.map((item, i) => (
+            <PortfolioItem key={item.id} item={item} delay={i * 60}/>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

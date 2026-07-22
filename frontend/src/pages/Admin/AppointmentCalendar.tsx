@@ -44,7 +44,15 @@ function DayButtonWithDots(byDate: Record<string, { status: string }[]>) {
 			<button
 				{...rest}
 				className={`relative w-full h-full min-h-[44px] rounded-xl flex flex-col items-center justify-center gap-0.5 text-sm font-medium transition-all
+<<<<<<< HEAD
           ${
+=======
+<<<<<<< HEAD
+          ${
+=======
+					${
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 						modifiers.selected
 							? 'bg-pink-500 text-white shadow-md shadow-pink-500/40'
 							: modifiers.today
@@ -53,6 +61,10 @@ function DayButtonWithDots(byDate: Record<string, { status: string }[]>) {
 									? 'bg-gray-800/60 hover:bg-pink-500/10 text-gray-100'
 									: 'text-gray-500 hover:bg-gray-800/60'
 					}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
           ${modifiers.outside ? 'opacity-30 pointer-events-none' : ''}
         `}
 			>
@@ -64,6 +76,31 @@ function DayButtonWithDots(byDate: Record<string, { status: string }[]>) {
 						))}
 						{appts.length > 3 && (
 							<span className={`text-[8px] leading-none ${modifiers.selected ? 'text-white' : 'text-gray-500'}`}>+</span>
+<<<<<<< HEAD
+=======
+=======
+					${modifiers.outside ? 'opacity-30 pointer-events-none' : ''}
+				`}
+			>
+				<span>{day.date.getDate()}</span>
+				{appts.length > 0 && (
+					<div
+						className={`flex gap-0.5 ${modifiers.selected ? 'opacity-90' : ''}`}
+					>
+						{appts.slice(0, 3).map((a, i) => (
+							<span
+								key={i}
+								className={`w-1 h-1 rounded-full ${modifiers.selected ? 'bg-gray-900' : DOT_COLORS[a.status] || 'bg-gray-500'}`}
+							/>
+						))}
+						{appts.length > 3 && (
+							<span
+								className={`text-[8px] leading-none ${modifiers.selected ? 'text-white' : 'text-gray-500'}`}
+							>
+								+
+							</span>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 						)}
 					</div>
 				)}
@@ -88,7 +125,18 @@ export default function AppointmentCalendar() {
 		return map
 	}, [appointments])
 
+<<<<<<< HEAD
 	const DayButtonComponent = useMemo(() => DayButtonWithDots(byDate as any), [byDate])
+=======
+<<<<<<< HEAD
+	const DayButtonComponent = useMemo(() => DayButtonWithDots(byDate as any), [byDate])
+=======
+	const DayButtonComponent = useMemo(
+		() => DayButtonWithDots(byDate as any),
+		[byDate],
+	)
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 
 	const selectedKey = selected ? toKey(selected) : null
 	const dayAppts = selectedKey ? byDate[selectedKey] || [] : []
@@ -112,6 +160,10 @@ export default function AppointmentCalendar() {
 			<div className='flex flex-col lg:flex-row gap-6'>
 				{/* Календарь */}
 				<div className='calendar-panel flex-1 bg-gray-900 rounded-2xl border border-gray-800 p-3 sm:p-5 shadow-sm shadow-black/30 overflow-x-auto'>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 				<DayPicker
 					mode='single'
 					locale={ru}
@@ -203,6 +255,135 @@ export default function AppointmentCalendar() {
 				)}
 			</div>
 		</div>
+<<<<<<< HEAD
+=======
+=======
+					<DayPicker
+						mode='single'
+						locale={ru}
+						selected={selected}
+						onSelect={d =>
+							setSelected(prev =>
+								prev && d && toKey(prev) === toKey(d) ? undefined : d,
+							)
+						}
+						month={month}
+						onMonthChange={setMonth}
+						showOutsideDays
+						components={{ DayButton: DayButtonComponent }}
+						classNames={{
+							root: 'min-w-[280px]',
+							months: 'flex flex-col',
+							month: 'w-full relative',
+							month_caption:
+								'flex items-center justify-center py-2 mb-1 font-semibold text-gray-100 capitalize',
+							nav: 'flex items-center justify-between absolute inset-x-0 top-0 px-1 pointer-events-none',
+							button_previous:
+								'pointer-events-auto w-8 h-8 rounded-full hover:bg-gray-800 flex items-center justify-center text-gray-400 transition-colors',
+							button_next:
+								'pointer-events-auto w-8 h-8 rounded-full hover:bg-gray-800 flex items-center justify-center text-gray-400 transition-colors',
+							weekdays: 'grid grid-cols-7 mb-1',
+							weekday:
+								'text-center text-xs font-medium py-1 text-gray-500 capitalize',
+							week: 'grid grid-cols-7 gap-1',
+							day: 'aspect-square p-0',
+						}}
+					/>
+
+					{/* Легенда */}
+					<div className='flex gap-4 mt-2 pt-4 border-t border-gray-800 flex-wrap'>
+						{[
+							['bg-yellow-400', 'Ожидает'],
+							['bg-green-400', 'Подтверждено'],
+							['bg-blue-400', 'Завершено'],
+						].map(([c, l]) => (
+							<div
+								key={l}
+								className='flex items-center gap-1.5 text-xs text-gray-400'
+							>
+								<div className={`w-2 h-2 rounded-full ${c}`} />
+								{l}
+							</div>
+						))}
+					</div>
+				</div>
+
+				{/* Панель записей выбранного дня */}
+				<div className='calendar-panel lg:w-80'>
+					{selected ? (
+						<div className='bg-gray-900 rounded-2xl border border-gray-800 p-5 shadow-sm shadow-black/30'>
+							<h3 className='font-semibold text-gray-100 mb-1'>
+								{selected.toLocaleDateString('ru-RU', {
+									day: 'numeric',
+									month: 'long',
+								})}
+							</h3>
+							<p className='text-xs text-gray-500 mb-4'>
+								{dayAppts.length}{' '}
+								{dayAppts.length === 1
+									? 'запись'
+									: dayAppts.length < 5
+										? 'записи'
+										: 'записей'}
+							</p>
+
+							{dayAppts.length === 0 ? (
+								<p className='text-sm text-gray-500 text-center py-6'>
+									Нет записей
+								</p>
+							) : (
+								<div className='flex flex-col gap-3'>
+									{dayAppts
+										.slice()
+										.sort((a, b) => a.time.localeCompare(b.time))
+										.map(a => (
+											<div
+												key={a.id}
+												className='border border-gray-800 rounded-xl p-3'
+											>
+												<div className='flex items-center justify-between mb-1'>
+													<span className='font-bold text-pink-400 text-sm'>
+														{a.time}
+													</span>
+													<span
+														className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[a.status]}`}
+													>
+														{STATUS_LABELS[a.status]}
+													</span>
+												</div>
+												<p className='font-medium text-gray-100 text-sm'>
+													{a.userName}
+												</p>
+												<p className='text-xs text-gray-400 mt-0.5'>
+													{a.service}
+												</p>
+												{a.userPhone && (
+													<p className='text-xs text-pink-400 mt-0.5'>
+														📞 {a.userPhone}
+													</p>
+												)}
+												{a.duration && (
+													<p className='text-xs text-gray-500'>
+														⏱ {a.duration} ч
+													</p>
+												)}
+											</div>
+										))}
+								</div>
+							)}
+						</div>
+					) : (
+						<div className='bg-gray-800/60 rounded-2xl p-5 text-center text-gray-500 text-sm'>
+							<div className='text-3xl mb-2'>📅</div>
+							Нажмите на день
+							<br />
+							чтобы увидеть записи
+						</div>
+					)}
+				</div>
+			</div>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 		</div>
 	)
 }

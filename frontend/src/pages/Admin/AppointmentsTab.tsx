@@ -22,7 +22,18 @@ export default function AppointmentsTab() {
 	const [filter, setFilter] = useState('all')
 	const listRef = useRef<HTMLDivElement>(null)
 
+<<<<<<< HEAD
 	const filtered = filter === 'all' ? appointments : appointments.filter(a => a.status === filter)
+=======
+<<<<<<< HEAD
+	const filtered = filter === 'all' ? appointments : appointments.filter(a => a.status === filter)
+=======
+	const filtered =
+		filter === 'all'
+			? appointments
+			: appointments.filter(a => a.status === filter)
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 
 	useGSAP(
 		() => {
@@ -47,11 +58,31 @@ export default function AppointmentsTab() {
 						key={f}
 						onClick={() => setFilter(f)}
 						className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 							filter === f ? 'bg-pink-500 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
 						}`}
 					>
 						{f === 'all' ? 'Все' : STATUS_LABELS[f]}
 						{f !== 'all' && stats && <span className='ml-1 opacity-70'>({(stats as any)[f] ?? 0})</span>}
+<<<<<<< HEAD
+=======
+=======
+							filter === f
+								? 'bg-pink-500 text-white'
+								: 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+						}`}
+					>
+						{f === 'all' ? 'Все' : STATUS_LABELS[f]}
+						{f !== 'all' && stats && (
+							<span className='ml-1 opacity-70'>
+								({(stats as any)[f] ?? 0})
+							</span>
+						)}
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 					</button>
 				))}
 			</div>
@@ -61,7 +92,18 @@ export default function AppointmentsTab() {
 			) : (
 				<div className='flex flex-col gap-3'>
 					{filtered.map(a => (
+<<<<<<< HEAD
 						<div key={a.id} className='appointment-card bg-gray-900 rounded-2xl border border-gray-800 p-4 sm:p-5'>
+=======
+<<<<<<< HEAD
+						<div key={a.id} className='appointment-card bg-gray-900 rounded-2xl border border-gray-800 p-4 sm:p-5'>
+=======
+						<div
+							key={a.id}
+							className='appointment-card bg-gray-900 rounded-2xl border border-gray-800 p-4 sm:p-5'
+						>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 							<div className='flex flex-col sm:flex-row sm:items-center gap-3'>
 								<div className='flex-1 min-w-0'>
 									<div className='flex items-center gap-2 flex-wrap'>
@@ -73,13 +115,41 @@ export default function AppointmentsTab() {
 										</span>
 									</div>
 									<p className='text-sm text-gray-400 mt-0.5'>{a.userEmail}</p>
+<<<<<<< HEAD
 									{a.userPhone && <p className='text-sm text-pink-400 font-medium'>📞 {a.userPhone}</p>}
 									<p className='text-sm text-gray-200 mt-1 font-medium'>{a.service}</p>
+=======
+<<<<<<< HEAD
+									{a.userPhone && <p className='text-sm text-pink-400 font-medium'>📞 {a.userPhone}</p>}
+									<p className='text-sm text-gray-200 mt-1 font-medium'>{a.service}</p>
+=======
+									{a.userPhone && (
+										<p className='text-sm text-pink-400 font-medium'>
+											📞 {a.userPhone}
+										</p>
+									)}
+									<p className='text-sm text-gray-200 mt-1 font-medium'>
+										{a.service}
+									</p>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 									<p className='text-sm text-gray-500'>
 										📅 {a.date} · ⏰ {a.time}
 										{a.duration ? ` · ⏱ ${a.duration} ч` : ''}
 									</p>
+<<<<<<< HEAD
 									{a.comment && <p className='text-xs text-gray-500 mt-1 italic'>"{a.comment}"</p>}
+=======
+<<<<<<< HEAD
+									{a.comment && <p className='text-xs text-gray-500 mt-1 italic'>"{a.comment}"</p>}
+=======
+									{a.comment && (
+										<p className='text-xs text-gray-500 mt-1 italic'>
+											"{a.comment}"
+										</p>
+									)}
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 								</div>
 
 								<div className='flex flex-wrap gap-2 shrink-0'>

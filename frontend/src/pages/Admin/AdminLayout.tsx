@@ -9,9 +9,18 @@ const NAV_ITEMS = [
 	{ to: '/dashboard', end: true, label: 'Записи', icon: '📋' },
 	{ to: '/dashboard/calendar', end: false, label: 'Календарь', icon: '📅' },
 	{ to: '/dashboard/schedule', end: false, label: 'Расписание', icon: '🗂' },
+<<<<<<< HEAD
 	{ to: '/dashboard/services', end: false, label: 'Услуги и цены', icon: '💅' },
 	{ to: '/dashboard/portfolio', end: false, label: 'Портфолио', icon: '🖼' },
 	{ to: '/dashboard/banners', end: false, label: 'Баннеры', icon: '📣' },
+=======
+<<<<<<< HEAD
+	{ to: '/dashboard/services', end: false, label: 'Услуги и цены', icon: '💅' },
+	{ to: '/dashboard/portfolio', end: false, label: 'Портфолио', icon: '🖼' },
+	{ to: '/dashboard/banners', end: false, label: 'Баннеры', icon: '📣' },
+=======
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	{ to: '/dashboard/stats', end: false, label: 'Статистика', icon: '📊' },
 ]
 
@@ -36,7 +45,18 @@ function NavContent({ onNavigate }: { onNavigate?: () => void }) {
 	return (
 		<div ref={navRef} className='flex flex-col h-full'>
 			<div className='px-5 py-6'>
+<<<<<<< HEAD
 				<p className='text-xl font-bold' style={{ fontFamily: 'Georgia, serif' }}>
+=======
+<<<<<<< HEAD
+				<p className='text-xl font-bold' style={{ fontFamily: 'Georgia, serif' }}>
+=======
+				<p
+					className='text-xl font-bold'
+					style={{ fontFamily: 'Georgia, serif' }}
+				>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 					<span className='text-gray-100'>Kerri</span>
 					<span className='text-pink-400'> Nails</span>
 				</p>
@@ -54,7 +74,17 @@ function NavContent({ onNavigate }: { onNavigate?: () => void }) {
 						onClick={onNavigate}
 						className={({ isActive }) =>
 							`admin-nav-item px-3 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center gap-2.5 ${
+<<<<<<< HEAD
 								isActive ? 'bg-pink-500/10 text-pink-400' : 'text-gray-300 hover:bg-gray-800/60 hover:text-gray-100'
+=======
+<<<<<<< HEAD
+								isActive ? 'bg-pink-500/10 text-pink-400' : 'text-gray-300 hover:bg-gray-800/60 hover:text-gray-100'
+=======
+								isActive
+									? 'bg-pink-500/10 text-pink-400'
+									: 'text-gray-300 hover:bg-gray-800/60 hover:text-gray-100'
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 							}`
 						}
 					>
@@ -108,7 +138,18 @@ function DashboardShell() {
 				{ opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' },
 			)
 		},
+<<<<<<< HEAD
 		{ scope: contentRef, dependencies: [location.pathname, authLoading, dataLoading] },
+=======
+<<<<<<< HEAD
+		{ scope: contentRef, dependencies: [location.pathname, authLoading, dataLoading] },
+=======
+		{
+			scope: contentRef,
+			dependencies: [location.pathname, authLoading, dataLoading],
+		},
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 	)
 
 	const currentLabel = NAV_ITEMS.find(i =>
@@ -130,7 +171,18 @@ function DashboardShell() {
 						className='p-2 -ml-2 rounded-lg hover:bg-gray-800'
 						aria-label='Меню'
 					>
+<<<<<<< HEAD
 						<svg viewBox='0 0 24 24' className='w-5 h-5 fill-current text-gray-200'>
+=======
+<<<<<<< HEAD
+						<svg viewBox='0 0 24 24' className='w-5 h-5 fill-current text-gray-200'>
+=======
+						<svg
+							viewBox='0 0 24 24'
+							className='w-5 h-5 fill-current text-gray-200'
+						>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 							<path d='M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z' />
 						</svg>
 					</button>
@@ -141,7 +193,18 @@ function DashboardShell() {
 				{/* Mobile slide-over menu */}
 				{menuOpen && (
 					<div className='fixed inset-0 z-50 md:hidden'>
+<<<<<<< HEAD
 						<div className='absolute inset-0 bg-black/70' onClick={() => setMenuOpen(false)} />
+=======
+<<<<<<< HEAD
+						<div className='absolute inset-0 bg-black/70' onClick={() => setMenuOpen(false)} />
+=======
+						<div
+							className='absolute inset-0 bg-black/70'
+							onClick={() => setMenuOpen(false)}
+						/>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 						<div className='absolute left-0 top-0 bottom-0 w-64 bg-gray-900 shadow-2xl shadow-black/40'>
 							<NavContent onNavigate={() => setMenuOpen(false)} />
 						</div>
@@ -150,7 +213,18 @@ function DashboardShell() {
 
 				{/* Content — scrollable, so nothing gets clipped on small screens */}
 				<main className='flex-1 overflow-y-auto overscroll-contain'>
+<<<<<<< HEAD
 					<div ref={contentRef} className='px-4 sm:px-6 py-6 sm:py-8 max-w-6xl mx-auto'>
+=======
+<<<<<<< HEAD
+					<div ref={contentRef} className='px-4 sm:px-6 py-6 sm:py-8 max-w-6xl mx-auto'>
+=======
+					<div
+						ref={contentRef}
+						className='px-4 sm:px-6 py-6 sm:py-8 max-w-6xl mx-auto'
+					>
+>>>>>>> 7898cfa5490e04dec799c3d7640ff5e2abeccde1
+>>>>>>> ec29853f4cfcc07ca7a9ccccf493547b18e981a2
 						{authLoading || dataLoading ? (
 							<div className='flex items-center justify-center py-20'>
 								<div className='w-8 h-8 border-2 border-pink-500 border-t-transparent rounded-full animate-spin' />
